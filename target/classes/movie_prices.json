@@ -1,0 +1,18 @@
+[
+	{
+		"movie_name" : "아바타",
+		"price" : { "currency_type" : "KRW", "value" : 10000 }
+	},
+	{
+		"movie_name" : "타이타닉",
+		"price" : { "currency_type" : "KRW", "value" : 13500 }
+	},
+	{
+		"movie_name" : "스타워즈:깨어난 포스",
+		"price" : { "currency_type" : "KRW", "value" : 12000 }
+	},
+	{
+		"movie_name" : "신비한 동물들과 덤블도어의 비밀",
+		"price" : { "currency_type" : "KRW", "value" : 15000 }		
+	}
+]
