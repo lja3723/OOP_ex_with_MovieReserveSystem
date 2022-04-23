@@ -3,8 +3,7 @@ package com.lja3723.ex.movie_reservation;
 import com.lja3723.ex.movie_reservation.physical.MultiplexCinema;
 import com.lja3723.ex.movie_reservation.physical.Seat;
 import com.lja3723.ex.movie_reservation.resource_reader.*;
-
-import java.io.FileNotFoundException;
+import java.util.*;
 
 public class MovieReservationSystem {
 	private MultiplexCinema cinema;
@@ -14,15 +13,15 @@ public class MovieReservationSystem {
 	}
 
 	private void initialize() {
-		String str;
-		try {
-			str = FileReader.getTotalStringFrom("src/main/resources/movies.json");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return;
+		JSONArrayReader movieReader = new MovieReader("src/main/resources/movies.json");
+		List<Movie> movieList = movieReader.getObjectList();
+		for (Movie movie : movieList) {
+			System.out.printf("Title:%s, ReleaseDate:%s, RunningTime:%d%n",
+					movie.getTitle(),
+					movie.getReleaseDate(),
+					movie.getRunningTime().getSeconds() / 60
+			);
 		}
-
-		System.out.println(str);
 	}
 
 	public Reservation createReservation(Customer customer, Screening screening, Seat seat) {
