@@ -8,9 +8,9 @@ import com.lja3723.ex.movie_reservation.value.*;
 import com.lja3723.ex.movie_reservation.policy.*;
 
 public class Movie {
-	private String title;
-	private LocalDate releaseDate;
-	private Duration runningTime;
+	private final String title;
+	private final LocalDate releaseDate;
+	private final Duration runningTime;
 	//private Money fee;
 	//private DiscountPolicy discountPolicy;
 

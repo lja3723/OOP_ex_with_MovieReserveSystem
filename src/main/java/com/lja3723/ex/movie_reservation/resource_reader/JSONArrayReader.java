@@ -9,10 +9,16 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.*;
 
-public abstract class JSONArrayReader {
+public abstract class JSONArrayReader<T> {
     private JSONArray jArray;
+    private final List<T> list = new ArrayList<>();
 
     public JSONArrayReader (String filePath) {
+        initJsonArray(filePath);
+        initList();
+    }
+
+    private void initJsonArray(String filePath) {
         try {
             jArray = new JSONArray(readFileFrom(filePath));
         } catch (JSONException | FileNotFoundException e) {
@@ -20,12 +26,10 @@ public abstract class JSONArrayReader {
         }
     }
 
-    public <T> List<T> getObjectList() {
-        List<T> objects = new ArrayList<>();
+    private void initList() {
         for (int i = 0; i < jArray.length(); i++) {
-            objects.add(convert(jArray.getJSONObject(i)));
+            list.add(convert(jArray.getJSONObject(i)));
         }
-        return objects;
     }
 
     private String readFileFrom(String filePath) throws FileNotFoundException {
@@ -38,13 +42,15 @@ public abstract class JSONArrayReader {
         }
 
         //file to String
-        StringBuilder FileString = new StringBuilder();
+        StringBuilder fileString = new StringBuilder();
         while (scanner.hasNextLine()) {
-            FileString.append(scanner.nextLine()).append('\n');
+            fileString.append(scanner.nextLine());
         }
-        return FileString.toString();
+        return fileString.toString();
     }
 
+    public final List<T> getList() { return list; }
+
     //JSONObject 를 T로 변환하는 로직을 오버라이딩 해야 함
-    abstract protected <T> T convert(JSONObject jObject);
+    abstract protected T convert(JSONObject jObject);
 }

@@ -2,13 +2,70 @@ package com.lja3723.ex.movie_reservation.physical;
 
 import java.util.*;
 
-import com.lja3723.ex.movie_reservation.physical.Seat;
-
 public class Theatre {
-	private int number;
-	private String name;
-	private int rows;
-	private int columns;
-	
-	List<Seat> seats = new ArrayList<Seat>();
+	private final int theatreNumber;
+	private final String theatreName;
+	private final int rows;
+	private final int columns;
+	private List<Seat> seats = new ArrayList<>();
+	private List<Seat> excludedSeats;
+
+	public Theatre(int theatreNumber, String theatreName, int rows, int columns) {
+		this.theatreNumber = theatreNumber;
+		this.theatreName = theatreName;
+		this.rows = rows;
+		this.columns = columns;
+		initSeats();
+	}
+
+	private void initSeats() {
+		for (int row = 1; row <= rows; row++) {
+			for (int column = 1; column <= columns; column++) {
+				seats.add(new Seat(this, row, column));
+			}
+		}
+	}
+
+	public void initExcludedSeats(List<Seat> excludedSeats) {
+		if (this.excludedSeats != null) {
+			return;
+		}
+		this.excludedSeats = excludedSeats;
+		for (Seat excludedSeat : excludedSeats) {
+			seats.remove(excludedSeat);
+		}
+	}
+
+	public int getTheatreNumber() {
+		return theatreNumber;
+	}
+
+	public final String getTheatreName() {
+		return theatreName;
+	}
+	public int getRows() {
+		return rows;
+	}
+
+	public int getColumns() {
+		return columns;
+	}
+
+	public int getSeatsCount() {
+		return seats.size();
+	}
+
+	public Seat getSeat(String seatPosition) {
+		int index = seats.indexOf(new Seat(this, seatPosition));
+		return index != -1 ? seats.get(index) : null;
+	}
+
+	public final List<Seat> getSeats() {
+		return seats;
+	}
+
+	public final List<Seat> getExcludedSeats() {
+		return excludedSeats;
+	}
+
 }
