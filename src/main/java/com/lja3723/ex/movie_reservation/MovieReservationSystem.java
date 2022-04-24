@@ -7,22 +7,21 @@ import com.lja3723.ex.movie_reservation.value.Money;
 import java.util.*;
 
 public class MovieReservationSystem {
-	private final MultiplexCinema cinema;
 	private final List<Movie> movies;
+	private final MultiplexCinema cinema;
+	private final List<Screening> screenings;
 
-	private List<Screening> screenings;
 	public MovieReservationSystem(String cinemaName, Money cinemaFinance) {
 		JSONArrayReader<Movie> moviesReader =
 				new MovieJsonReader("src/main/resources/movies.json");
-		this.movies = moviesReader.getList();
-
 		JSONArrayReader<Theatre> theatresReader =
 				new TheatreJsonReader("src/main/resources/theatres.json");
-		this.cinema = new MultiplexCinema(cinemaName, cinemaFinance, theatresReader.getList());
-
 		JSONArrayReader<Screening> screeningsReader =
 				new ScreeningsJsonReader("src/main/resources/screenings.json",
-						movies, theatresReader.getList());
+						moviesReader.getList(), theatresReader.getList());
+
+		this.movies = moviesReader.getList();
+		this.cinema = new MultiplexCinema(cinemaName, cinemaFinance, theatresReader.getList());
 		this.screenings = screeningsReader.getList();
 
 		printMovies(movies);
