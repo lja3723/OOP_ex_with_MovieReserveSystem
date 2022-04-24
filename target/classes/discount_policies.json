@@ -25,7 +25,7 @@
 			"value" : 12.0,
 			"conditions" : [
 				{ "type" : "period", "value" : {
-					"day_of_the_week" : "Thusday",
+					"day_of_the_week" : "Tuesday",
 					"duration" : { "start" : "14:00", "end" : "17:00" } }
 				},
 				{ "type" : "sequence", "value" : 2 },
