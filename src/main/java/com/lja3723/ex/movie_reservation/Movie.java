@@ -2,24 +2,15 @@ package com.lja3723.ex.movie_reservation;
 
 import java.time.*;
 
-import com.lja3723.ex.movie_reservation.policy.DiscountPolicy;
-import com.lja3723.ex.movie_reservation.value.Money;
-import com.lja3723.ex.movie_reservation.value.*;
-import com.lja3723.ex.movie_reservation.policy.*;
-
 public class Movie {
 	private final String title;
 	private final LocalDate releaseDate;
 	private final Duration runningTime;
-	//private Money fee;
-	//private DiscountPolicy discountPolicy;
 
 	public Movie(String title, LocalDate releaseDate, Duration runningTime) {//, Money fee, DiscountPolicy discountPolicy) {
 		this.title = title;
 		this.releaseDate = releaseDate;
 		this.runningTime = runningTime;
-		//this.fee = fee;
-		//this.discountPolicy = discountPolicy;
 	}
 
 	public String getTitle() {
@@ -36,18 +27,18 @@ public class Movie {
 
 	@Override
 	public String toString() {
-		return String.format("Title: %s, ReleaseDate: %s, RunningTime: %d%n",
+		return String.format("Title: %s, ReleaseDate: %s, RunningTime: %d",
 				title,
 				releaseDate,
 				runningTime.toMinutes()
 		);
 	}
-	
-	//public Money getFee() {
-	//	return fee;
-	//}
 
-	//public Money calculateMovieFee(Screening screening) {
-	//	return fee.minus(discountPolicy.calculateDiscountAmount(screening));
-	//}
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof Movie movie)) {
+			return false;
+		}
+		return movie.title.equals(this.title) && movie.releaseDate == this.releaseDate;
+	}
 }

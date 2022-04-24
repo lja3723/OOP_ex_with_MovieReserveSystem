@@ -1,10 +1,6 @@
 package com.lja3723.ex.movie_reservation;
 
-import com.lja3723.ex.movie_reservation.physical.MultiplexCinema;
-import com.lja3723.ex.movie_reservation.physical.Theatre;
 import com.lja3723.ex.movie_reservation.value.Money;
-
-import java.util.List;
 
 public class MainEntry {
 	public static void main(String[] args) {

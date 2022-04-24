@@ -7,7 +7,7 @@ public class Theatre {
 	private final String theatreName;
 	private final int rows;
 	private final int columns;
-	private List<Seat> seats = new ArrayList<>();
+	private final List<Seat> seats = new ArrayList<>();
 	private List<Seat> excludedSeats;
 
 	public Theatre(int theatreNumber, String theatreName, int rows, int columns) {
@@ -36,11 +36,11 @@ public class Theatre {
 		}
 	}
 
-	public int getTheatreNumber() {
+	public int getNumber() {
 		return theatreNumber;
 	}
 
-	public final String getTheatreName() {
+	public final String getName() {
 		return theatreName;
 	}
 	public int getRows() {

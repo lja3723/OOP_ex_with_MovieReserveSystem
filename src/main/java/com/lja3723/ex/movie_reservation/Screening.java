@@ -3,14 +3,13 @@ package com.lja3723.ex.movie_reservation;
 import java.time.*;
 
 import com.lja3723.ex.movie_reservation.physical.Theatre;
-import com.lja3723.ex.movie_reservation.value.Money;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 
 public class Screening {
-	private Movie movie;
-	private Sequence sequence;
-	private LocalDateTime whenScreened;
-	private Theatre theatre;
+	private final Movie movie;
+	private final Sequence sequence;
+	private final LocalDateTime whenScreened;
+	private final Theatre theatre;
 
 	public Screening(Movie movie, Sequence sequence, LocalDateTime whenScreened, Theatre theatre) {
 		this.movie = movie;
@@ -25,6 +24,16 @@ public class Screening {
 
 	public boolean isSequence(Sequence sequence) {
 		return this.sequence.equals(sequence);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Screened Movie: [ %s ]%n",
+				movie.toString()) +
+		String.format("Theatre info: [ name: %s, number: %d ]%n",
+				theatre.getName(), theatre.getNumber()) +
+		String.format("Screening Time: [ Date: %s, Time: %s, Sequence: %d ]%n",
+				whenScreened.toLocalDate().toString(), whenScreened.toLocalTime().toString(), sequence.get());
 	}
 
 	//public Money getMovieFee() {
