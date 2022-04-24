@@ -10,7 +10,7 @@ import com.lja3723.ex.movie_reservation.condition.*;
 import com.lja3723.ex.movie_reservation.value.*;
 
 public abstract class DiscountPolicy {
-	private List<DiscountCondition> conditions = new ArrayList<DiscountCondition>();
+	private List<DiscountCondition> conditions = new ArrayList<>();
 
 	public DiscountPolicy(DiscountCondition... conditions) {
 		this.conditions = Arrays.asList(conditions);

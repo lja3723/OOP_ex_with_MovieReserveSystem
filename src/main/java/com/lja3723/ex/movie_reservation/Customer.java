@@ -9,7 +9,7 @@ public class Customer {
 	private String name;
 	private Money ownMoney;
 	private final int ReservationLimit = 8;
-	private List<Reservation> reservations = new ArrayList<Reservation>();
+	private List<Reservation> reservations = new ArrayList<>();
 
 	public Customer(String name, Money ownMoney) {
 		this.name = name;

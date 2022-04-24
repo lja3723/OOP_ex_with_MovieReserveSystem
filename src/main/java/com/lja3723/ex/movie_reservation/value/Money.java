@@ -44,7 +44,7 @@ public class Money {
 	}
 
 	public boolean equals(Money money) {
-		return this.amount == money.amount;
+		return this.amount.equals(money.amount);
 	}
 	
 	@Override
