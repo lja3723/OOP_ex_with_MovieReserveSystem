@@ -1,48 +1,36 @@
 package com.lja3723.ex.movie_reservation;
 
-import com.lja3723.ex.movie_reservation.physical.MultiplexCinema;
-import com.lja3723.ex.movie_reservation.physical.Seat;
-import com.lja3723.ex.movie_reservation.physical.Theatre;
+import com.lja3723.ex.movie_reservation.physical.*;
 import com.lja3723.ex.movie_reservation.resource_reader.*;
+import com.lja3723.ex.movie_reservation.value.Money;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.*;
 
 public class MovieReservationSystem {
 	private final MultiplexCinema cinema;
-	public MovieReservationSystem(MultiplexCinema cinema) {
-		this.cinema = cinema;
-		initialize();
+	private final List<Movie> movies;
+	public MovieReservationSystem(String cinemaName, Money cinemaFinance) {
+		JSONArrayReader<Movie> moviesReader = new MovieJsonReader("src/main/resources/movies.json");
+		JSONArrayReader<Theatre> theatresReader = new TheatreJsonReader("src/main/resources/theatres.json");
+
+		this.movies = moviesReader.getList();
+		this.cinema = new MultiplexCinema(cinemaName, cinemaFinance, theatresReader.getList());
+
+		printMovies(movies);
+		printTheatres(cinema.getTheatres());
 	}
 
-	private void initialize() {
-		List<Movie> movies = new MovieJsonReader("src/main/resources/movies.json").getList();
-		cinema.initTheatres(new TheatreJsonReader("src/main/resources/theatres.json").getList());
-
+	private void printMovies(List<Movie> movies) {
 		System.out.println("[Movies]");
 		for (Movie movie : movies) {
-			System.out.printf("Title: %s, ReleaseDate: %s, RunningTime: %d%n",
-					movie.getTitle(),
-					movie.getReleaseDate(),
-					movie.getRunningTime().toMinutes()
-			);
+			System.out.print(movie);
 		}
+	}
 
+	private void printTheatres(List<Theatre> theatres) {
 		System.out.println("[Theatres]");
 		for (Theatre theatre : cinema.getTheatres()) {
-			System.out.printf("number: %d, name: %s, rows: %d, columns: %d, seats: %d%n",
-					theatre.getTheatreNumber(), theatre.getTheatreName(),
-					theatre.getRows(), theatre.getColumns(), theatre.getSeatsCount());
-			System.out.print("seats: ");
-			for (Seat seat : theatre.getSeats()) {
-				System.out.printf("%s; ", seat);
-			}
-			System.out.println();
-			System.out.print("excludedSeats: ");
-			for (Seat seat : theatre.getExcludedSeats()) {
-				System.out.printf("%s; ", seat);
-			}
-			System.out.println();
+			System.out.print(theatre);
 		}
 	}
 

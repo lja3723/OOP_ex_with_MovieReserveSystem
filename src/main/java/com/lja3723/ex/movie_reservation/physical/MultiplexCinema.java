@@ -9,17 +9,10 @@ public class MultiplexCinema {
     private List<Theatre> theatres;
     private Money finance; //재정
 
-    private boolean isInitTheatres = false;
-
-    public MultiplexCinema(String name, Money finance) {
+    public MultiplexCinema(String name, Money finance, List<Theatre> theatres) {
         this.name = name;
         this.finance = finance;
-    }
-
-    public void initTheatres(List<Theatre> theatres) {
-        if (isInitTheatres) { return; }
         this.theatres = theatres;
-        isInitTheatres = true;
     }
 
     public String getName() {

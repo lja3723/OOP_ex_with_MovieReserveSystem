@@ -34,6 +34,14 @@ public class Movie {
 		return runningTime;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Title: %s, ReleaseDate: %s, RunningTime: %d%n",
+				title,
+				releaseDate,
+				runningTime.toMinutes()
+		);
+	}
 	
 	//public Money getFee() {
 	//	return fee;

@@ -55,10 +55,15 @@ public class Theatre {
 		return seats.size();
 	}
 
+	public int getExcludedSeatsCount() {
+		return excludedSeats.size();
+	}
+
+	/*
 	public Seat getSeat(String seatPosition) {
 		int index = seats.indexOf(new Seat(this, seatPosition));
 		return index != -1 ? seats.get(index) : null;
-	}
+	}*/
 
 	public final List<Seat> getSeats() {
 		return seats;
@@ -66,6 +71,27 @@ public class Theatre {
 
 	public final List<Seat> getExcludedSeats() {
 		return excludedSeats;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder string = new StringBuilder();
+		string.append(String.format("Number: %d, Name: %s, Rows: %d, Columns: %d, SeatsCount: %d, ExcludedSeatsCount: %d%n",
+				theatreNumber, theatreName, rows, columns, getSeatsCount(), getExcludedSeatsCount()));
+
+		string.append("Seats: ");
+		for (Seat seat : seats) {
+			string.append(String.format("%s; ", seat));
+		}
+		string.append("\n");
+
+		string.append("ExcludedSeats: ");
+		for (Seat seat : excludedSeats) {
+			string.append(String.format("%s; ", seat));
+		}
+		string.append("\n");
+
+		return string.toString();
 	}
 
 }
