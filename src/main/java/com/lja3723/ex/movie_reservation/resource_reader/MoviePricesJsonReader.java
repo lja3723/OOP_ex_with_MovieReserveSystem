@@ -1,11 +1,8 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.value.Money;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.json.*;
+import java.util.*;
 
 public final class MoviePricesJsonReader {
     JSONArrayReader jsonArrayReader;

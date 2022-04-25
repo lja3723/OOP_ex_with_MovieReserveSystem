@@ -1,7 +1,6 @@
 package com.lja3723.ex.movie_reservation;
 
 import java.time.*;
-
 import com.lja3723.ex.movie_reservation.physical.Theatre;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 

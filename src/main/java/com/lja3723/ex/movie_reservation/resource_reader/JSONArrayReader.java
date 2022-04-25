@@ -1,10 +1,6 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import org.json.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;

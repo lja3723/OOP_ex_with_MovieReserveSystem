@@ -1,13 +1,12 @@
 package com.lja3723.ex.movie_reservation.condition;
 
 import com.lja3723.ex.movie_reservation.Screening;
-import com.lja3723.ex.movie_reservation.*;
 import java.time.*;
 
 public class PeriodCondition extends DiscountCondition {
-	private DayOfWeek dayOfWeek;
-	private LocalTime startTime;
-	private LocalTime endTime;
+	private final DayOfWeek dayOfWeek;
+	private final LocalTime startTime;
+	private final LocalTime endTime;
 
 	public PeriodCondition(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
 		this.dayOfWeek = dayOfWeek;

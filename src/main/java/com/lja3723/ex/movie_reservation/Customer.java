@@ -3,13 +3,12 @@ package com.lja3723.ex.movie_reservation;
 import java.util.*;
 
 import com.lja3723.ex.movie_reservation.value.Money;
-import com.lja3723.ex.movie_reservation.Reservation;
 
 public class Customer {
-	private String name;
+	private final String name;
 	private Money ownMoney;
 	private final int ReservationLimit = 8;
-	private List<Reservation> reservations = new ArrayList<>();
+	private final List<Reservation> reservations = new ArrayList<>();
 
 	public Customer(String name, Money ownMoney) {
 		this.name = name;

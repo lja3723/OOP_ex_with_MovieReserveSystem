@@ -1,9 +1,7 @@
 package com.lja3723.ex.movie_reservation.condition;
 
 import com.lja3723.ex.movie_reservation.value.Sequence;
-
-import java.time.DayOfWeek;
-import java.time.LocalTime;
+import java.time.*;
 
 public class DiscountConditionBuilder {
     private DiscountConditionBuilder() {}

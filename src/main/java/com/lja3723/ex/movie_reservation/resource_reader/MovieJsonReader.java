@@ -1,22 +1,18 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
-import com.lja3723.ex.movie_reservation.Movie;
-import java.time.Duration;
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import com.lja3723.ex.movie_reservation.Movie;
 import com.lja3723.ex.movie_reservation.policy.DiscountPolicy;
 import com.lja3723.ex.movie_reservation.value.Money;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.*;
 
 public final class MovieJsonReader {
     private final JSONArrayReader jsonArrayReader;
     private final MoviePricesJsonReader moviePricesJsonReader;
     private final DiscountPoliciesJsonReader discountPoliciesJsonReader;
-    private List<Movie> movieList = new ArrayList<>();
+    private final List<Movie> movieList = new ArrayList<>();
 
    public MovieJsonReader(
            String filePath,
