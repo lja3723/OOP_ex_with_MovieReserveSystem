@@ -7,6 +7,8 @@ import com.lja3723.ex.movie_reservation.*;
 import com.lja3723.ex.movie_reservation.condition.*;
 import com.lja3723.ex.movie_reservation.value.*;
 
+import java.util.List;
+
 public class AmountDiscountPolicy extends DiscountPolicy {
 	private Money discountAmount;
 
@@ -14,7 +16,12 @@ public class AmountDiscountPolicy extends DiscountPolicy {
 		super(conditions);
 		this.discountAmount = discountAmount;
 	}
-	
+
+	public AmountDiscountPolicy(Money discountAmount, List<DiscountCondition> conditions) {
+		super(conditions);
+		this.discountAmount = discountAmount;
+	}
+
 	@Override
 	protected Money getDiscountAmount(Screening screening) {
 		return discountAmount;

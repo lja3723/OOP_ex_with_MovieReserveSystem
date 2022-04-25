@@ -5,10 +5,17 @@ import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
 import com.lja3723.ex.movie_reservation.value.Money;
 import com.lja3723.ex.movie_reservation.value.Percentage;
 
+import java.util.List;
+
 public class PercentDiscountPolicy extends DiscountPolicy {
 	private Percentage percent;
 
 	public PercentDiscountPolicy(Percentage percent, DiscountCondition... conditions) {
+		super(conditions);
+		this.percent = percent;
+	}
+
+	public PercentDiscountPolicy(Percentage percent, List<DiscountCondition> conditions) {
 		super(conditions);
 		this.percent = percent;
 	}

@@ -5,7 +5,7 @@ import com.lja3723.ex.movie_reservation.value.Sequence;
 import com.lja3723.ex.movie_reservation.*;
 import com.lja3723.ex.movie_reservation.value.*;
 
-public class SequenceCondition implements DiscountCondition {
+public class SequenceCondition extends DiscountCondition {
 	private Sequence sequence;
 
 	public SequenceCondition(Sequence sequence) {

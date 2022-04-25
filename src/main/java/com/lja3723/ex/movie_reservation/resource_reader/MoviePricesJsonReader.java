@@ -22,15 +22,10 @@ public final class MoviePricesJsonReader {
         Money price;
         for (int i = 0; i < jArray.length(); i++) {
             JSONObject jObject = jArray.getJSONObject(i);
-            movieName = jObject.getString("movie_name");
-
             JSONObject priceObject = jObject.getJSONObject("price");
-            if (priceObject.getString("currency_type").equals("KRW")) {
-                price = Money.wons(priceObject.getInt("value"));
-            }
-            else {
-                throw new RuntimeException("Currency type is not KRW!");
-            }
+
+            movieName = jObject.getString("movie_name");
+            price = MoneyJsonReader.convert(priceObject);
 
             map.put(movieName, price);
         }

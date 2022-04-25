@@ -4,7 +4,7 @@ import com.lja3723.ex.movie_reservation.Screening;
 import com.lja3723.ex.movie_reservation.*;
 import java.time.*;
 
-public class PeriodCondition implements DiscountCondition {
+public class PeriodCondition extends DiscountCondition {
 	private DayOfWeek dayOfWeek;
 	private LocalTime startTime;
 	private LocalTime endTime;
