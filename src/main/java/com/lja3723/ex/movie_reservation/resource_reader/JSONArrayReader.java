@@ -9,13 +9,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-public abstract class JSONArrayReader<T> {
-    protected JSONArray jArray;
-    protected final List<T> list = new ArrayList<>();
+public final class JSONArrayReader {
+    private JSONArray jArray;
 
     public JSONArrayReader (String filePath) {
         initJsonArray(filePath);
-        initList();
     }
 
     private void initJsonArray(String filePath) {
@@ -26,7 +24,7 @@ public abstract class JSONArrayReader<T> {
         }
     }
 
-    private @NotNull String readFileFrom(String filePath) throws FileNotFoundException {
+    private String readFileFrom(String filePath) throws FileNotFoundException {
         Scanner scanner;
         //open file
         try {
@@ -44,14 +42,7 @@ public abstract class JSONArrayReader<T> {
         return fileString.toString();
     }
 
-    protected void initList() {
-        for (int i = 0; i < jArray.length(); i++) {
-            list.add(convert(jArray.getJSONObject(i)));
-        }
+    public JSONArray getJSONArray() {
+        return jArray;
     }
-
-    //JSONObject 를 T로 변환하는 로직을 오버라이딩 해야 함
-    abstract protected T convert(JSONObject jObject);
-
-    public final List<T> getList() { return list; }
 }

@@ -1,84 +1,69 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
-import com.lja3723.ex.movie_reservation.Movie;
-import com.lja3723.ex.movie_reservation.Screening;
+import com.lja3723.ex.movie_reservation.*;
 import com.lja3723.ex.movie_reservation.physical.Theatre;
 import com.lja3723.ex.movie_reservation.value.Sequence;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import org.json.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class ScreeningsJsonReader extends JSONArrayReader<Screening> {
-    private final List<Movie> movies;
-    private final List<Theatre> theatres;
-	public ScreeningsJsonReader(String filePath, List<Movie> movies, List<Theatre> theatres) {
-        super(filePath);
-        this.movies = movies;
-        this.theatres = theatres;
-        initListForThisClass();
+public final class ScreeningsJsonReader {
+    private final JSONArrayReader jsonArrayReader;
+    private final List<Movie> movieList;
+    private final List<Theatre> theatreList;
+    private final List<Screening> screeningList = new ArrayList<>();
+
+	public ScreeningsJsonReader(String filePath, List<Movie> movieList, List<Theatre> theatreList) {
+        this.jsonArrayReader = new JSONArrayReader(filePath);
+        this.movieList = movieList;
+        this.theatreList = theatreList;
+        initList();
     }
 
-    protected void initListForThisClass() {
-        for (int i = 0; i < jArray.length(); i++) {
-            JSONObject jObject = jArray.getJSONObject(i);
-            Movie movie = getMovieByName(jObject.getString("movie_name"));
-            list.addAll(convert(jObject.getJSONArray("screenings"), movie));
+    private void initList() {
+        JSONArray jArray = jsonArrayReader.getJSONArray();
+
+        Movie movie;
+        LocalDate screeningDate;
+        LocalTime screeningStartTime;
+        Theatre theatre;
+
+        for (int movieNameIndex = 0; movieNameIndex < jArray.length(); movieNameIndex++) {
+            JSONObject jObject = jArray.getJSONObject(movieNameIndex);
+            movie = getMovieByName(jObject.getString("movie_name"));
+
+            JSONArray screenings = jObject.getJSONArray("screenings");
+            for (int dateIndex = 0; dateIndex < screenings.length(); dateIndex++) {
+                JSONObject sameDateScreenings = screenings.getJSONObject(dateIndex);
+                screeningDate = LocalDate.parse(
+                        sameDateScreenings.getString("date"), DateTimeFormatter.ofPattern("yyyy/MM/dd")
+                );
+
+                JSONArray theatres = sameDateScreenings.getJSONArray("theatres");
+                for (int theatreIndex = 0; theatreIndex < theatres.length(); theatreIndex++) {
+                    JSONObject screeningsTheatre = theatres.getJSONObject(theatreIndex);
+                    theatre =  getTheatreByNumber(screeningsTheatre.getInt("number"));
+
+                    JSONArray start_times = screeningsTheatre.getJSONArray("start_times");
+                    for (int startTimeIndex = 0; startTimeIndex < start_times.length(); startTimeIndex++) {
+                        screeningStartTime = LocalTime.parse(
+                                start_times.getString(startTimeIndex), DateTimeFormatter.ofPattern("HH:mm")
+                        );
+
+                        screeningList.add(new Screening(
+                                movie,
+                                new Sequence(startTimeIndex + 1),
+                                LocalDateTime.of(screeningDate, screeningStartTime),
+                                theatre));
+                    }
+                }
+            }
         }
-    }
-
-    private List<Screening> convert(JSONArray screenings, Movie movie) {
-        List<Screening> screeningList = new ArrayList<>();
-
-        for (int i = 0; i < screenings.length(); i++) {
-            JSONObject sameDateScreenings = screenings.getJSONObject(i);
-            LocalDate screeningDate = LocalDate.parse(
-                    sameDateScreenings.getString("date"), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-
-            JSONArray screeningTheatres = sameDateScreenings.getJSONArray("theatres");
-            screeningList.addAll(convert(screeningTheatres, movie, screeningDate));
-        }
-        return screeningList;
-    }
-
-    private List<Screening> convert(JSONArray screeningTheatres, Movie movie, LocalDate screeningDate) {
-        List<Screening> screeningList = new ArrayList<>();
-
-        for (int j = 0; j < screeningTheatres.length(); j++) {
-            JSONObject screeningsTheatre = screeningTheatres.getJSONObject(j);
-            Theatre theatre =  getTheatreByNumber(screeningsTheatre.getInt("number"));
-
-            JSONArray screeningStartTimes = screeningsTheatre.getJSONArray("start_times");
-            screeningList.addAll(convert(screeningStartTimes, movie, screeningDate, theatre));
-        }
-
-        return screeningList;
-    }
-
-    private List<Screening> convert(JSONArray screeningStartTimes, Movie movie, LocalDate screeningDate, Theatre theatre) {
-        List<Screening> screeningList = new ArrayList<>();
-
-        for (int k = 0; k < screeningStartTimes.length(); k++) {
-            LocalTime screeningStartTime = LocalTime.parse(
-                    screeningStartTimes.getString(k), DateTimeFormatter.ofPattern("HH:mm")
-            );
-
-            screeningList.add(new Screening(
-                    movie,
-                    new Sequence(k + 1),
-                    LocalDateTime.of(screeningDate, screeningStartTime),
-                    theatre));
-        }
-
-        return screeningList;
     }
 
     private Movie getMovieByName(String movieName) throws JSONException {
-        for (Movie movie: movies) {
+        for (Movie movie: movieList) {
             if (movie.getTitle().equals(movieName)) {
                 return movie;
             }
@@ -88,7 +73,7 @@ public class ScreeningsJsonReader extends JSONArrayReader<Screening> {
     }
 
     private Theatre getTheatreByNumber(int theatreNumber) throws JSONException {
-        for (Theatre theatre : theatres) {
+        for (Theatre theatre : theatreList) {
             if (theatre.getNumber() == theatreNumber)
                 return theatre;
         }
@@ -96,12 +81,7 @@ public class ScreeningsJsonReader extends JSONArrayReader<Screening> {
                 String.format("cannot find theatre of number %d in given theatre list!", theatreNumber));
     }
 
-
-    @Override
-    protected void initList() { }
-
-    @Override
-    protected Screening convert(JSONObject jObject) throws JSONException{
-        return null;
+    public List<Screening> getList() {
+        return screeningList;
     }
 }
