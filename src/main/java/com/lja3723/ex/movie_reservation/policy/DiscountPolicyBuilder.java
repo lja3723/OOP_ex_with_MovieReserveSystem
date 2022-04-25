@@ -8,23 +8,9 @@ import java.util.List;
 
 public class DiscountPolicyBuilder {
     private DiscountPolicyBuilder() {}
-    private enum PolicyType {
-        AMOUNT, PERCENT, NONE;
-
-        public static PolicyType convert(String policyType) {
-            if (policyType.toLowerCase().equals("amount")) {
-                return AMOUNT;
-            }
-            else if (policyType.toLowerCase().equals("percent")) {
-                return PERCENT;
-            }
-            else {
-                return NONE;
-            }
-        }
-    }
+    public enum PolicyType {  AMOUNT, PERCENT, NONE }
     private PolicyType policy;
-    private List<DiscountCondition> conditions = new ArrayList<>();
+    private final List<DiscountCondition> conditions = new ArrayList<>();
     private Money discountAmount = Money.ZERO;
     private Percentage discountPercent = new Percentage(0);
 
@@ -33,7 +19,7 @@ public class DiscountPolicyBuilder {
     }
 
     public DiscountPolicyBuilder policyType(String policyType) {
-        this.policy = PolicyType.convert(policyType);
+        this.policy = PolicyType.valueOf(policyType.toUpperCase());
         return this;
     }
 
@@ -52,17 +38,17 @@ public class DiscountPolicyBuilder {
         return this;
     }
 
+    public DiscountPolicyBuilder addConditions(List<DiscountCondition> conditions) {
+        this.conditions.addAll(conditions);
+        return this;
+    }
+
     public DiscountPolicy build() {
-        switch (policy) {
-            case AMOUNT:
-                return new AmountDiscountPolicy(discountAmount, conditions);
-            case PERCENT:
-                return new PercentDiscountPolicy(discountPercent, conditions);
-            case NONE:
-                return new NoneDiscountPolicy();
-            default:
-                throw new RuntimeException("Unexpected discount policy type;");
-        }
+        return switch (policy) {
+            case AMOUNT -> new AmountDiscountPolicy(discountAmount, conditions);
+            case PERCENT -> new PercentDiscountPolicy(discountPercent, conditions);
+            case NONE -> new NoneDiscountPolicy();
+        };
     }
 }
 
