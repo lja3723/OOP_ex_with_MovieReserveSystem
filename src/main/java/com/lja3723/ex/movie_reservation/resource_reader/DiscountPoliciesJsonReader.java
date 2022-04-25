@@ -1,22 +1,24 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
-import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
-import com.lja3723.ex.movie_reservation.policy.DiscountPolicy;
+import com.lja3723.ex.movie_reservation.reservable.DiscountCondition;
+import com.lja3723.ex.movie_reservation.reservable.DiscountPolicy;
 import com.lja3723.ex.movie_reservation.value.*;
 import org.json.*;
+
+import java.io.FileNotFoundException;
 import java.time.*;
 import java.util.*;
 
 public final class DiscountPoliciesJsonReader {
-    JSONArrayReader jsonArrayReader;
+    private final String filePath;
     Map<String, DiscountPolicy> map = new HashMap<>();
-    public DiscountPoliciesJsonReader (String filePath) {
-        this.jsonArrayReader = new JSONArrayReader(filePath);
+    public DiscountPoliciesJsonReader (String filePath) throws FileNotFoundException {
+        this.filePath = filePath;
         initMap();
     }
 
-    private void initMap() {
-        JSONArray jArray = jsonArrayReader.getJSONArray();
+    private void initMap() throws FileNotFoundException {
+        JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
 
         for (int i = 0; i < jArray.length(); i++) {
             JSONObject jObject = jArray.getJSONObject(i);

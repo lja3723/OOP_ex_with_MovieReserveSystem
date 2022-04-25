@@ -1,6 +1,7 @@
 package com.lja3723.ex.movie_reservation.condition;
 
-import com.lja3723.ex.movie_reservation.Screening;
+import com.lja3723.ex.movie_reservation.reservable.DiscountCondition;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
 import java.time.*;
 
 public class PeriodCondition extends DiscountCondition {

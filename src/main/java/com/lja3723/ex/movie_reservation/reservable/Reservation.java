@@ -1,4 +1,4 @@
-package com.lja3723.ex.movie_reservation;
+package com.lja3723.ex.movie_reservation.reservable;
 
 import com.lja3723.ex.movie_reservation.physical.Seat;
 

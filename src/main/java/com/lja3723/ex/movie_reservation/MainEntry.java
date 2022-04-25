@@ -1,5 +1,6 @@
 package com.lja3723.ex.movie_reservation;
 
+import com.lja3723.ex.movie_reservation.reservable.MovieReservationSystem;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 public class MainEntry {

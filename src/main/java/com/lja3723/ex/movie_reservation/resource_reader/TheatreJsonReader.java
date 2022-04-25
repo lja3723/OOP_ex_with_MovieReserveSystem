@@ -2,18 +2,21 @@ package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.physical.*;
 import org.json.*;
+
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public final class TheatreJsonReader {
-    JSONArrayReader jsonArrayReader;
-    List<Theatre> theatreList = new ArrayList<>();
-	public TheatreJsonReader(String filePath) {
-        this.jsonArrayReader = new JSONArrayReader(filePath);
+    private final String filePath;
+    private final List<Theatre> theatreList = new ArrayList<>();
+	public TheatreJsonReader(String filePath) throws FileNotFoundException {
+        this.filePath = filePath;
         initList();
     }
 
-    private void initList() {
-        JSONArray jArray = jsonArrayReader.getJSONArray();
+    private void initList() throws FileNotFoundException {
+        JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
+
         for (int i = 0; i < jArray.length(); i++) {
             theatreList.add(convert(jArray.getJSONObject(i)));
         }

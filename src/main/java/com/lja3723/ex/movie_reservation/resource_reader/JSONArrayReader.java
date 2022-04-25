@@ -6,21 +6,18 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public final class JSONArrayReader {
-    private JSONArray jArray;
+    private JSONArrayReader() {}
 
-    public JSONArrayReader (String filePath) {
-        initJsonArray(filePath);
-    }
-
-    private void initJsonArray(String filePath) {
+    public static JSONArray getJSONArray (String filePath) throws FileNotFoundException {
         try {
-            jArray = new JSONArray(readFileFrom(filePath));
+            return new JSONArray(readFileFrom(filePath));
         } catch (JSONException | FileNotFoundException e) {
             e.printStackTrace();
+            throw e;
         }
     }
 
-    private String readFileFrom(String filePath) throws FileNotFoundException {
+    private static String readFileFrom(String filePath) throws FileNotFoundException {
         Scanner scanner;
         //open file
         try {
@@ -36,9 +33,5 @@ public final class JSONArrayReader {
             fileString.append(scanner.nextLine());
         }
         return fileString.toString();
-    }
-
-    public JSONArray getJSONArray() {
-        return jArray;
     }
 }

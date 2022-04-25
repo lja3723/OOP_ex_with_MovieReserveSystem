@@ -1,28 +1,31 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
-import com.lja3723.ex.movie_reservation.*;
 import com.lja3723.ex.movie_reservation.physical.Theatre;
+import com.lja3723.ex.movie_reservation.reservable.Movie;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 import org.json.*;
+
+import java.io.FileNotFoundException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public final class ScreeningsJsonReader {
-    private final JSONArrayReader jsonArrayReader;
+    private final String filePath;
     private final List<Movie> movieList;
     private final List<Theatre> theatreList;
     private final List<Screening> screeningList = new ArrayList<>();
 
-	public ScreeningsJsonReader(String filePath, List<Movie> movieList, List<Theatre> theatreList) {
-        this.jsonArrayReader = new JSONArrayReader(filePath);
+	public ScreeningsJsonReader(String filePath, List<Movie> movieList, List<Theatre> theatreList) throws FileNotFoundException {
+        this.filePath = filePath;
         this.movieList = movieList;
         this.theatreList = theatreList;
         initList();
     }
 
-    private void initList() {
-        JSONArray jArray = jsonArrayReader.getJSONArray();
+    private void initList() throws FileNotFoundException {
+        JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
 
         Movie movie;
         LocalDate screeningDate;
