@@ -2,18 +2,20 @@ package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.value.Money;
 import org.json.*;
+
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public final class MoviePricesJsonReader {
-    JSONArrayReader jsonArrayReader;
+    private final String filePath;
     Map<String, Money> map = new HashMap<>();
-    public MoviePricesJsonReader(String filePath) {
-        this.jsonArrayReader = new JSONArrayReader(filePath);
+    public MoviePricesJsonReader(String filePath) throws FileNotFoundException {
+        this.filePath = filePath;
         initMap();
     }
 
-    public void initMap() {
-        JSONArray jArray = jsonArrayReader.getJSONArray();
+    public void initMap() throws FileNotFoundException {
+        JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
 
         String movieName;
         Money price;

@@ -1,5 +1,6 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
+import java.io.FileNotFoundException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -9,7 +10,7 @@ import com.lja3723.ex.movie_reservation.value.Money;
 import org.json.*;
 
 public final class MovieJsonReader {
-    private final JSONArrayReader jsonArrayReader;
+    private final String filePath;
     private final MoviePricesJsonReader moviePricesJsonReader;
     private final DiscountPoliciesJsonReader discountPoliciesJsonReader;
     private final List<Movie> movieList = new ArrayList<>();
@@ -17,17 +18,16 @@ public final class MovieJsonReader {
    public MovieJsonReader(
            String filePath,
            MoviePricesJsonReader moviePricesJsonReader,
-           DiscountPoliciesJsonReader discountPoliciesJsonReader)
+           DiscountPoliciesJsonReader discountPoliciesJsonReader) throws FileNotFoundException
    {
-       //super(filePath);
-       this.jsonArrayReader = new JSONArrayReader(filePath);
+       this.filePath = filePath;
        this.moviePricesJsonReader = moviePricesJsonReader;
        this.discountPoliciesJsonReader = discountPoliciesJsonReader;
        initList();
    }
 
-   private void initList() {
-       JSONArray jArray = jsonArrayReader.getJSONArray();
+   private void initList() throws FileNotFoundException {
+       JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
        for (int i = 0; i < jArray.length(); i++) {
            movieList.add(convert(jArray.getJSONObject(i)));
        }
