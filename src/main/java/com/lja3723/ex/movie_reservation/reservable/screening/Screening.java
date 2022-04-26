@@ -18,7 +18,15 @@ public class Screening {
 		this.theatre = theatre;
 	}
 
-	public LocalDateTime getStartTime() {
+	public boolean isMovieNameEquals(String movieName) {
+		return movie.getTitle().equals(movieName);
+	}
+
+	public boolean isTheatreNumberEquals(int number) {
+		return theatre.getNumber() == number;
+	}
+
+	public LocalDateTime getScreenedDateTime() {
 		return whenScreened;
 	}
 

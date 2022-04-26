@@ -3,18 +3,20 @@ package com.lja3723.ex.movie_reservation;
 import com.lja3723.ex.movie_reservation.physical.*;
 import com.lja3723.ex.movie_reservation.reservable.Customer;
 import com.lja3723.ex.movie_reservation.reservable.Reservation;
-import com.lja3723.ex.movie_reservation.reservable.movie.Movie;
+import com.lja3723.ex.movie_reservation.reservable.movie.MovieList;
 import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
+import com.lja3723.ex.movie_reservation.reservable.screening.ScreeningList;
 import com.lja3723.ex.movie_reservation.resource_reader.*;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 import java.io.FileNotFoundException;
+import java.time.LocalTime;
 import java.util.*;
 
 public class MovieReservationSystem {
 	private MultiplexCinema cinema;
-	private List<Movie> movies;
-	private List<Screening> screenings;
+	private MovieList movieList;
+	private ScreeningList screeningList;
 
 	public MovieReservationSystem(String cinemaName, Money cinemaFinance) {
 		try {
@@ -29,12 +31,14 @@ public class MovieReservationSystem {
 							moviesReader.getList(), theatresReader.getList());
 
 			this.cinema = new MultiplexCinema(cinemaName, cinemaFinance, theatresReader.getList());
-			this.movies = moviesReader.getList();
-			this.screenings = screeningsReader.getList();
+			this.movieList = new MovieList(moviesReader.getList());
+			this.screeningList = new ScreeningList(screeningsReader.getList());
 
 			System.out.println("MRS 생성자 실행 완료");
 
-		} catch (FileNotFoundException e) {}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Reservation createReservation(Customer customer, Screening screening, Seat seat) {

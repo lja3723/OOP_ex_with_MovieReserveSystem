@@ -16,7 +16,7 @@ public class PeriodCondition extends DiscountCondition {
 	}
 
 	public boolean isSatisfiedBy(Screening screening) {
-		LocalDateTime startTime = screening.getStartTime();
+		LocalDateTime startTime = screening.getScreenedDateTime();
 		return 
 			startTime.getDayOfWeek().equals(dayOfWeek) &&
 			this.startTime.compareTo(startTime.toLocalTime()) <= 0 &&
