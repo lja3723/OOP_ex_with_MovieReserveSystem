@@ -1,5 +1,7 @@
-package com.lja3723.ex.movie_reservation.reservable;
+package com.lja3723.ex.movie_reservation.reservable.movie;
 
+import com.lja3723.ex.movie_reservation.DiscountPolicy;
+import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 import java.time.*;
