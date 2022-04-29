@@ -1,9 +1,10 @@
-package com.lja3723.ex.movie_reservation;
+package com.lja3723.ex.movie_reservation.policy;
 
 import java.util.*;
 
+import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
 import com.lja3723.ex.movie_reservation.policy.DiscountPolicyBuilder;
-import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 public abstract class DiscountPolicy {

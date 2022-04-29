@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import com.lja3723.ex.movie_reservation.reservable.movie.Movie;
-import com.lja3723.ex.movie_reservation.DiscountPolicy;
+import com.lja3723.ex.movie_reservation.reservable.Movie;
+import com.lja3723.ex.movie_reservation.policy.DiscountPolicy;
 import com.lja3723.ex.movie_reservation.value.Money;
 import org.json.*;
 

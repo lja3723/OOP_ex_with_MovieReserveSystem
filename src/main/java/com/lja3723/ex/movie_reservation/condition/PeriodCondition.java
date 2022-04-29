@@ -1,10 +1,9 @@
 package com.lja3723.ex.movie_reservation.condition;
 
-import com.lja3723.ex.movie_reservation.DiscountCondition;
-import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
 import java.time.*;
 
-public class PeriodCondition extends DiscountCondition {
+final class PeriodCondition extends DiscountCondition {
 	private final DayOfWeek dayOfWeek;
 	private final LocalTime startTime;
 	private final LocalTime endTime;

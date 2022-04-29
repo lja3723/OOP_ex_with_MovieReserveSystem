@@ -1,13 +1,12 @@
 package com.lja3723.ex.movie_reservation.policy;
 
-import com.lja3723.ex.movie_reservation.DiscountCondition;
-import com.lja3723.ex.movie_reservation.DiscountPolicy;
+import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
 import com.lja3723.ex.movie_reservation.value.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscountPolicyBuilder {
+public final class DiscountPolicyBuilder {
     private DiscountPolicyBuilder() {}
     public enum PolicyType {  AMOUNT, PERCENT, NONE }
     private PolicyType policy;

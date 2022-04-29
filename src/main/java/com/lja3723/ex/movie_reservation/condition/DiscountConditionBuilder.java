@@ -1,10 +1,9 @@
 package com.lja3723.ex.movie_reservation.condition;
 
-import com.lja3723.ex.movie_reservation.DiscountCondition;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 import java.time.*;
 
-public class DiscountConditionBuilder {
+public final class DiscountConditionBuilder {
     private DiscountConditionBuilder() {}
     private enum ConditionType { SEQUENCE, PERIOD, NONE }
 

@@ -1,18 +1,11 @@
 package com.lja3723.ex.movie_reservation;
 
 import com.lja3723.ex.movie_reservation.physical.*;
-import com.lja3723.ex.movie_reservation.reservable.Customer;
-import com.lja3723.ex.movie_reservation.reservable.Reservation;
-import com.lja3723.ex.movie_reservation.reservable.movie.MovieList;
-import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
-import com.lja3723.ex.movie_reservation.reservable.screening.ScreeningList;
+import com.lja3723.ex.movie_reservation.reservable.*;
 import com.lja3723.ex.movie_reservation.resource_reader.*;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 import java.io.FileNotFoundException;
-import java.time.LocalTime;
-import java.util.*;
-
 public class MovieReservationSystem {
 	private MultiplexCinema cinema;
 	private MovieList movieList;

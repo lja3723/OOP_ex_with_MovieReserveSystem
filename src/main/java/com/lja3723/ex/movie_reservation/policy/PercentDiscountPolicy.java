@@ -1,13 +1,12 @@
 package com.lja3723.ex.movie_reservation.policy;
 
-import com.lja3723.ex.movie_reservation.DiscountPolicy;
-import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
-import com.lja3723.ex.movie_reservation.DiscountCondition;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
+import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
 import com.lja3723.ex.movie_reservation.value.*;
 
 import java.util.List;
 
-public class PercentDiscountPolicy extends DiscountPolicy {
+final class PercentDiscountPolicy extends DiscountPolicy {
 	private final Percentage percent;
 
 	public PercentDiscountPolicy(Percentage percent, DiscountCondition... conditions) {

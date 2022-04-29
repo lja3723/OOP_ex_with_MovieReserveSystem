@@ -1,10 +1,9 @@
 package com.lja3723.ex.movie_reservation.condition;
 
-import com.lja3723.ex.movie_reservation.DiscountCondition;
-import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 
-public class SequenceCondition extends DiscountCondition {
+final class SequenceCondition extends DiscountCondition {
 	private final Sequence sequence;
 
 	public SequenceCondition(Sequence sequence) {

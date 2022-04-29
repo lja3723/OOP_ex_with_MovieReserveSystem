@@ -1,4 +1,4 @@
-package com.lja3723.ex.movie_reservation.reservable.screening;
+package com.lja3723.ex.movie_reservation.reservable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

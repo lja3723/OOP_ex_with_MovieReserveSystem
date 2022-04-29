@@ -1,8 +1,7 @@
-package com.lja3723.ex.movie_reservation.reservable.screening;
+package com.lja3723.ex.movie_reservation.reservable;
 
 import java.time.*;
 import com.lja3723.ex.movie_reservation.physical.Theatre;
-import com.lja3723.ex.movie_reservation.reservable.movie.Movie;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 
 public class Screening {

@@ -1,8 +1,8 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.physical.Theatre;
-import com.lja3723.ex.movie_reservation.reservable.movie.Movie;
-import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
+import com.lja3723.ex.movie_reservation.reservable.Movie;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 import org.json.*;
 

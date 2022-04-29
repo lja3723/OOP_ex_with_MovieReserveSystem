@@ -1,13 +1,12 @@
 package com.lja3723.ex.movie_reservation.policy;
 
-import com.lja3723.ex.movie_reservation.DiscountPolicy;
-import com.lja3723.ex.movie_reservation.reservable.screening.Screening;
-import com.lja3723.ex.movie_reservation.DiscountCondition;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
+import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 import java.util.List;
 
-public class AmountDiscountPolicy extends DiscountPolicy {
+final class AmountDiscountPolicy extends DiscountPolicy {
 	private final Money discountAmount;
 
 	public AmountDiscountPolicy(Money discountAmount, DiscountCondition... conditions) {

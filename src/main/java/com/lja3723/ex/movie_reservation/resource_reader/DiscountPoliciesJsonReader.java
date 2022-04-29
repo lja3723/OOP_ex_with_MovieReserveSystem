@@ -1,7 +1,7 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
-import com.lja3723.ex.movie_reservation.DiscountCondition;
-import com.lja3723.ex.movie_reservation.DiscountPolicy;
+import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
+import com.lja3723.ex.movie_reservation.policy.DiscountPolicy;
 import com.lja3723.ex.movie_reservation.value.*;
 import org.json.*;
 

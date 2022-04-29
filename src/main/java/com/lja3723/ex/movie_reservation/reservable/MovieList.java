@@ -1,4 +1,4 @@
-package com.lja3723.ex.movie_reservation.reservable.movie;
+package com.lja3723.ex.movie_reservation.reservable;
 
 import org.jetbrains.annotations.Nullable;
 

@@ -3,7 +3,7 @@ package com.lja3723.ex.movie_reservation.physical;
 import java.util.*;
 import com.lja3723.ex.movie_reservation.value.Money;
 
-public class MultiplexCinema {
+public final class MultiplexCinema {
     private final String name;
     private final List<Theatre> theatres;
     private Money finance; //재정
