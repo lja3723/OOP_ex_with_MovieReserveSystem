@@ -6,9 +6,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ScreeningList {
-    private final List<Screening> list;
+    private List<Screening> list;
 
     public static class ConditionSetter {
         private final List<Screening> list;
@@ -100,7 +101,7 @@ public class ScreeningList {
 
             LocalTime screeningTime = screening.getScreenedDateTime().toLocalTime();
             if (startTime != null && endTime != null)
-                return startTime.isBefore(screeningTime) && endTime.isAfter(screeningTime);
+                return startTime.isBefore(screeningTime) && screeningTime.isBefore(endTime);
 
             return true;
         }
@@ -121,5 +122,6 @@ public class ScreeningList {
 
     public void add(List<Screening> list) {
         this.list.addAll(list);
+        this.list = this.list.stream().distinct().collect(Collectors.toList());
     }
 }

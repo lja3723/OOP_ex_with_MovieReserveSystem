@@ -51,16 +51,4 @@ public class Screening {
 		String.format("Screening Time: [ Date: %s; Time: %s; Sequence: %d; ]",
 				whenScreened.toLocalDate().toString(), whenScreened.toLocalTime().toString(), sequence);
 	}
-
-	//public Money getMovieFee() {
-	//	return movie.getFee();
-	//}
-
-	//public Reservation reserve(Customer customer, int audienceCount) {
-	//	return new Reservation(customer, this, calculateFee(audienceCount), audienceCount);
-	//}
-
-	//private Money calculateFee(int audienceCount) {
-	//	return movie.calculateMovieFee(this).times(audienceCount);
-	//}
 }

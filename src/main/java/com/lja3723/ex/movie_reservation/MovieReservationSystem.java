@@ -6,6 +6,8 @@ import com.lja3723.ex.movie_reservation.resource_reader.*;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 import java.io.FileNotFoundException;
+import java.util.List;
+
 public class MovieReservationSystem {
 	private MultiplexCinema cinema;
 	private MovieList movieList;
@@ -34,7 +36,8 @@ public class MovieReservationSystem {
 		}
 	}
 
-	public void getMovieList() {
+	public List<String> getMovieList() {
+		return movieList.getMovieList();
 	}
 
 	public Reservation createReservation(Customer customer, Screening screening, Seat seat) {
