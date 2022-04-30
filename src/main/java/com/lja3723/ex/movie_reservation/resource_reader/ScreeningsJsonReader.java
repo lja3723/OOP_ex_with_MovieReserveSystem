@@ -1,8 +1,7 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.physical.Theatre;
-import com.lja3723.ex.movie_reservation.reservable.Movie;
-import com.lja3723.ex.movie_reservation.reservable.Screening;
+import com.lja3723.ex.movie_reservation.reservable.*;
 import com.lja3723.ex.movie_reservation.value.Sequence;
 import org.json.*;
 
@@ -15,6 +14,13 @@ public final class ScreeningsJsonReader {
     private final List<Movie> movieList;
     private final List<Theatre> theatreList;
     private final List<Screening> screeningList = new ArrayList<>();
+    private class ScreeningInfo {
+        public Movie movie;
+        public LocalDate date;
+        public LocalTime startTime;
+        public Theatre theatre;
+    }
+    private ScreeningInfo screeningInfo = new ScreeningInfo();
 
 	public ScreeningsJsonReader(String filePath, List<Movie> movieList, List<Theatre> theatreList) throws FileNotFoundException {
         this.movieList = movieList;
@@ -26,41 +32,40 @@ public final class ScreeningsJsonReader {
     private void initScreeningList(String filePath) throws FileNotFoundException {
         JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
 
-        Movie movie;
-        LocalDate screeningDate;
-        LocalTime screeningStartTime;
-        Theatre theatre;
-
         for (int movieNameIndex = 0; movieNameIndex < jArray.length(); movieNameIndex++) {
             JSONObject jObject = jArray.getJSONObject(movieNameIndex);
-            movie = getMovieByName(jObject.getString("movie_name"));
+            screeningInfo.movie = getMovieByName(jObject.getString("movie_name"));
+            parseScreenings(jObject.getJSONArray("screenings"));
+        }
+    }
 
-            JSONArray screenings = jObject.getJSONArray("screenings");
-            for (int dateIndex = 0; dateIndex < screenings.length(); dateIndex++) {
-                JSONObject sameDateScreenings = screenings.getJSONObject(dateIndex);
-                screeningDate = LocalDate.parse(
-                        sameDateScreenings.getString("date"), DateTimeFormatter.ofPattern("yyyy/MM/dd")
-                );
+    private void parseScreenings(JSONArray screenings) {
+        for (int dateIndex = 0; dateIndex < screenings.length(); dateIndex++) {
+            JSONObject sameDateScreenings = screenings.getJSONObject(dateIndex);
+            screeningInfo.date = LocalDate.parse(
+                    sameDateScreenings.getString("date"),
+                    DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            parseTheatres(sameDateScreenings.getJSONArray("theatres"));
+        }
 
-                JSONArray theatres = sameDateScreenings.getJSONArray("theatres");
-                for (int theatreIndex = 0; theatreIndex < theatres.length(); theatreIndex++) {
-                    JSONObject screeningsTheatre = theatres.getJSONObject(theatreIndex);
-                    theatre =  getTheatreByNumber(screeningsTheatre.getInt("number"));
+    }
 
-                    JSONArray start_times = screeningsTheatre.getJSONArray("start_times");
-                    for (int startTimeIndex = 0; startTimeIndex < start_times.length(); startTimeIndex++) {
-                        screeningStartTime = LocalTime.parse(
-                                start_times.getString(startTimeIndex), DateTimeFormatter.ofPattern("HH:mm")
-                        );
+    private void parseTheatres(JSONArray theatres) {
+        for (int theatreIndex = 0; theatreIndex < theatres.length(); theatreIndex++) {
+            JSONObject screeningsTheatre = theatres.getJSONObject(theatreIndex);
+            screeningInfo.theatre =  getTheatreByNumber(screeningsTheatre.getInt("number"));
+            parseStartTimes(screeningsTheatre.getJSONArray("start_times"));
+        }
+    }
 
-                        screeningList.add(new Screening(
-                                movie,
-                                new Sequence(startTimeIndex + 1),
-                                LocalDateTime.of(screeningDate, screeningStartTime),
-                                theatre));
-                    }
-                }
-            }
+    private void parseStartTimes(JSONArray startTimes) {
+        for (int startTimeIndex = 0; startTimeIndex < startTimes.length(); startTimeIndex++) {
+            screeningInfo.startTime = LocalTime.parse(startTimes.getString(startTimeIndex));
+            screeningList.add(new Screening(
+                    screeningInfo.movie,
+                    new Sequence(startTimeIndex + 1),
+                    LocalDateTime.of(screeningInfo.date, screeningInfo.startTime),
+                    screeningInfo.theatre));
         }
     }
 
