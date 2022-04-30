@@ -1,7 +1,6 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
-import com.lja3723.ex.movie_reservation.value.Sequence;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,7 +12,7 @@ import java.util.List;
 public class DiscountConditionJsonReader {
     public static List<DiscountCondition> getConditions(JSONArray jArrayConditions) {
         List<DiscountCondition> conditions = new ArrayList<>();
-        Sequence sequence = new Sequence(1);
+        int sequence = 1;
         DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
         LocalTime start = LocalTime.of(0, 0);
         LocalTime end = LocalTime.of(0, 0);
@@ -23,7 +22,7 @@ public class DiscountConditionJsonReader {
             String type = condition.getString("type");
 
             if (type.equals("sequence")) {
-                sequence = new Sequence(condition.getInt("value"));
+                sequence = condition.getInt("value");
             }
 
             else if (type.equals("period")) {

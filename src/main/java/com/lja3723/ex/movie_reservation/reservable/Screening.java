@@ -2,15 +2,14 @@ package com.lja3723.ex.movie_reservation.reservable;
 
 import java.time.*;
 import com.lja3723.ex.movie_reservation.physical.Theatre;
-import com.lja3723.ex.movie_reservation.value.Sequence;
 
 public class Screening {
 	private final Movie movie;
-	private final Sequence sequence;
+	private final int sequence;
 	private final LocalDateTime whenScreened;
 	private final Theatre theatre;
 
-	public Screening(Movie movie, Sequence sequence, LocalDateTime whenScreened, Theatre theatre) {
+	public Screening(Movie movie, int sequence, LocalDateTime whenScreened, Theatre theatre) {
 		this.movie = movie;
 		this.sequence = sequence;
 		this.whenScreened = whenScreened;
@@ -41,8 +40,8 @@ public class Screening {
 
 
 
-	public boolean isSequence(Sequence sequence) {
-		return this.sequence.equals(sequence);
+	public boolean isSequence(int sequence) {
+		return this.sequence == sequence;
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class Screening {
 		String.format("Theatre info: [ name: %s, number: %d ]%n",
 				theatre.getName(), theatre.getNumber()) +
 		String.format("Screening Time: [ Date: %s, Time: %s, Sequence: %d ]%n",
-				whenScreened.toLocalDate().toString(), whenScreened.toLocalTime().toString(), sequence.get());
+				whenScreened.toLocalDate().toString(), whenScreened.toLocalTime().toString(), sequence);
 	}
 
 	//public Money getMovieFee() {

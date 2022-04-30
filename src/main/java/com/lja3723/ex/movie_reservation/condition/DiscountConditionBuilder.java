@@ -1,6 +1,5 @@
 package com.lja3723.ex.movie_reservation.condition;
 
-import com.lja3723.ex.movie_reservation.value.Sequence;
 import java.time.*;
 
 public final class DiscountConditionBuilder {
@@ -8,7 +7,7 @@ public final class DiscountConditionBuilder {
     private enum ConditionType { SEQUENCE, PERIOD, NONE }
 
     ConditionType type = ConditionType.NONE;
-    Sequence sequence;
+    int sequence;
     DayOfWeek dayOfWeek;
     LocalTime start;
     LocalTime end;
@@ -22,7 +21,7 @@ public final class DiscountConditionBuilder {
         return this;
     }
 
-    public DiscountConditionBuilder sequence(Sequence sequence) {
+    public DiscountConditionBuilder sequence(int sequence) {
         this.sequence = sequence;
         return this;
     }

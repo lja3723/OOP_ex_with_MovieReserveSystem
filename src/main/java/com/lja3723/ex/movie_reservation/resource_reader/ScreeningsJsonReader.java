@@ -2,7 +2,6 @@ package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.physical.Theatre;
 import com.lja3723.ex.movie_reservation.reservable.*;
-import com.lja3723.ex.movie_reservation.value.Sequence;
 import org.json.*;
 
 import java.io.FileNotFoundException;
@@ -14,13 +13,13 @@ public final class ScreeningsJsonReader {
     private final List<Movie> movieList;
     private final List<Theatre> theatreList;
     private final List<Screening> screeningList = new ArrayList<>();
-    private class ScreeningInfo {
+    private static class ScreeningInfo {
         public Movie movie;
         public LocalDate date;
         public LocalTime startTime;
         public Theatre theatre;
     }
-    private ScreeningInfo screeningInfo = new ScreeningInfo();
+    private final ScreeningInfo screeningInfo = new ScreeningInfo();
 
 	public ScreeningsJsonReader(String filePath, List<Movie> movieList, List<Theatre> theatreList) throws FileNotFoundException {
         this.movieList = movieList;
@@ -63,7 +62,7 @@ public final class ScreeningsJsonReader {
             screeningInfo.startTime = LocalTime.parse(startTimes.getString(startTimeIndex));
             screeningList.add(new Screening(
                     screeningInfo.movie,
-                    new Sequence(startTimeIndex + 1),
+                    startTimeIndex + 1,
                     LocalDateTime.of(screeningInfo.date, screeningInfo.startTime),
                     screeningInfo.theatre));
         }
