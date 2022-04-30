@@ -3,7 +3,6 @@ package com.lja3723.ex.movie_reservation.policy;
 import java.util.*;
 
 import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
-import com.lja3723.ex.movie_reservation.policy.DiscountPolicyBuilder;
 import com.lja3723.ex.movie_reservation.reservable.Screening;
 import com.lja3723.ex.movie_reservation.value.Money;
 
@@ -17,10 +16,10 @@ public abstract class DiscountPolicy {
 		this.conditions = conditions;
 	}
 	
-	public Money calculateDiscountAmount(Screening screening) {
+	public Money calculateDiscountAmount(Money basicPrice, Screening screening) {
 		for (DiscountCondition each : conditions) {
 			if (each.isSatisfiedBy(screening)) {
-				return getDiscountAmount(screening);
+				return getDiscountAmount(basicPrice, screening);
 			}
 		}
 
@@ -31,5 +30,5 @@ public abstract class DiscountPolicy {
 		return DiscountPolicyBuilder.getInstance();
 	}
 
-	abstract protected Money getDiscountAmount(Screening screening);
+	abstract protected Money getDiscountAmount(Money basicPrice, Screening screening);
 }

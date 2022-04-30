@@ -18,7 +18,7 @@ public class Screening {
 	}
 
 	public boolean isMovieNameEquals(String movieName) {
-		return movie.getTitle().equals(movieName);
+		return movie.getName().equals(movieName);
 	}
 
 	public boolean isTheatreNumberEquals(int number) {
@@ -28,6 +28,18 @@ public class Screening {
 	public LocalDateTime getScreenedDateTime() {
 		return whenScreened;
 	}
+
+	public boolean isScreeningTimeBetween(LocalTime startTime, LocalTime endTime) {
+		LocalTime screeningTime = whenScreened.toLocalTime();
+		return startTime.isBefore(screeningTime) && endTime.isAfter(screeningTime);
+	}
+
+	public boolean isDayOfWeekEquals(DayOfWeek dayOfWeek) {
+		return whenScreened.getDayOfWeek().equals(dayOfWeek);
+	}
+
+
+
 
 	public boolean isSequence(Sequence sequence) {
 		return this.sequence.equals(sequence);

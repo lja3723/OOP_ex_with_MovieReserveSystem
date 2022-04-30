@@ -6,7 +6,7 @@ import com.lja3723.ex.movie_reservation.value.Money;
 import java.time.*;
 
 public class Movie {
-	private final String title;
+	private final String name;
 	private final LocalDate releaseDate;
 	private final Duration runningTime;
 
@@ -14,17 +14,17 @@ public class Movie {
 	private final DiscountPolicy discountPolicy;
 
 	public Movie(
-			String title, LocalDate releaseDate, Duration runningTime,
+			String name, LocalDate releaseDate, Duration runningTime,
 			Money basicPrice, DiscountPolicy discountPolicy) {
-		this.title = title;
+		this.name = name;
 		this.releaseDate = releaseDate;
 		this.runningTime = runningTime;
 		this.basicPrice = basicPrice;
 		this.discountPolicy = discountPolicy;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
 	public LocalDate getReleaseDate() {
@@ -40,12 +40,15 @@ public class Movie {
 	}
 
 	public Money getDiscountedPrice(Screening screening) {
-		return basicPrice.minus(discountPolicy.calculateDiscountAmount(screening));
+		Money discountedPrice = screening.isMovieNameEquals(name) ?
+				discountPolicy.calculateDiscountAmount(basicPrice, screening) : Money.ZERO;
+
+		return basicPrice.minus(discountedPrice);
 	}
 	@Override
 	public String toString() {
 		return String.format("Title: %s, ReleaseDate: %s, RunningTime: %d, BasicPrice: %s KRW",
-				title,
+				name,
 				releaseDate,
 				runningTime.toMinutes(),
 				basicPrice
@@ -54,9 +57,8 @@ public class Movie {
 
 	@Override
 	public boolean equals(Object object) {
-		if (!(object instanceof Movie movie)) {
-			return false;
-		}
-		return movie.title.equals(this.title) && movie.releaseDate == this.releaseDate;
+		if (!(object instanceof Movie movie)) return false;
+
+		return movie.name.equals(this.name) && movie.releaseDate == this.releaseDate;
 	}
 }

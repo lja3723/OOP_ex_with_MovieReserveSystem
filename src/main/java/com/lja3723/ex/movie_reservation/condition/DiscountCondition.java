@@ -1,7 +1,6 @@
 package com.lja3723.ex.movie_reservation.condition;
 
 import com.lja3723.ex.movie_reservation.reservable.Screening;
-import com.lja3723.ex.movie_reservation.condition.DiscountConditionBuilder;
 
 public abstract class DiscountCondition {
 	public static DiscountConditionBuilder builder() {

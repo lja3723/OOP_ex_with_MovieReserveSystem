@@ -12,19 +12,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public final class ScreeningsJsonReader {
-    private final String filePath;
     private final List<Movie> movieList;
     private final List<Theatre> theatreList;
     private final List<Screening> screeningList = new ArrayList<>();
 
 	public ScreeningsJsonReader(String filePath, List<Movie> movieList, List<Theatre> theatreList) throws FileNotFoundException {
-        this.filePath = filePath;
         this.movieList = movieList;
         this.theatreList = theatreList;
-        initList();
+
+        initScreeningList(filePath);
     }
 
-    private void initList() throws FileNotFoundException {
+    private void initScreeningList(String filePath) throws FileNotFoundException {
         JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
 
         Movie movie;
@@ -67,7 +66,7 @@ public final class ScreeningsJsonReader {
 
     private Movie getMovieByName(String movieName) throws JSONException {
         for (Movie movie: movieList) {
-            if (movie.getTitle().equals(movieName)) {
+            if (movie.getName().equals(movieName)) {
                 return movie;
             }
         }

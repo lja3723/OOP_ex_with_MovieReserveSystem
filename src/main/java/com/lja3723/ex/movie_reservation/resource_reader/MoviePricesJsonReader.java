@@ -7,26 +7,15 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public final class MoviePricesJsonReader {
-    private final String filePath;
     Map<String, Money> map = new HashMap<>();
     public MoviePricesJsonReader(String filePath) throws FileNotFoundException {
-        this.filePath = filePath;
-        initMap();
-    }
-
-    public void initMap() throws FileNotFoundException {
         JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
 
-        String movieName;
-        Money price;
+        //init map
         for (int i = 0; i < jArray.length(); i++) {
             JSONObject jObject = jArray.getJSONObject(i);
             JSONObject priceObject = jObject.getJSONObject("price");
-
-            movieName = jObject.getString("movie_name");
-            price = MoneyJsonReader.convert(priceObject);
-
-            map.put(movieName, price);
+            map.put(jObject.getString("movie_name"), MoneyJsonReader.parse(priceObject));
         }
     }
 

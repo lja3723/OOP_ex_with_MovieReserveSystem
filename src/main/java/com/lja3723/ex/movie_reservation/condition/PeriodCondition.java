@@ -15,10 +15,7 @@ final class PeriodCondition extends DiscountCondition {
 	}
 
 	public boolean isSatisfiedBy(Screening screening) {
-		LocalDateTime startTime = screening.getScreenedDateTime();
-		return 
-			startTime.getDayOfWeek().equals(dayOfWeek) &&
-			this.startTime.compareTo(startTime.toLocalTime()) <= 0 &&
-			this.endTime.compareTo(startTime.toLocalTime()) >= 0;
+		return screening.isDayOfWeekEquals(dayOfWeek) &&
+				screening.isScreeningTimeBetween(startTime, endTime);
 	}
 }

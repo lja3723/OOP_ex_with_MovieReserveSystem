@@ -20,7 +20,7 @@ final class AmountDiscountPolicy extends DiscountPolicy {
 	}
 
 	@Override
-	protected Money getDiscountAmount(Screening screening) {
+	protected Money getDiscountAmount(Money basicPrice, Screening screening) {
 		return discountAmount;
 	}
 }

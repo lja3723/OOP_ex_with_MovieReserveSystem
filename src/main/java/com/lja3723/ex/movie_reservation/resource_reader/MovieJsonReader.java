@@ -10,7 +10,6 @@ import com.lja3723.ex.movie_reservation.value.Money;
 import org.json.*;
 
 public final class MovieJsonReader {
-    private final String filePath;
     private final MoviePricesJsonReader moviePricesJsonReader;
     private final DiscountPoliciesJsonReader discountPoliciesJsonReader;
     private final List<Movie> movieList = new ArrayList<>();
@@ -20,30 +19,30 @@ public final class MovieJsonReader {
            MoviePricesJsonReader moviePricesJsonReader,
            DiscountPoliciesJsonReader discountPoliciesJsonReader) throws FileNotFoundException
    {
-       this.filePath = filePath;
+       //init member variables
        this.moviePricesJsonReader = moviePricesJsonReader;
        this.discountPoliciesJsonReader = discountPoliciesJsonReader;
-       initList();
-   }
 
-   private void initList() throws FileNotFoundException {
+       //init list
        JSONArray jArray = JSONArrayReader.getJSONArray(filePath);
        for (int i = 0; i < jArray.length(); i++) {
-           movieList.add(convert(jArray.getJSONObject(i)));
+           movieList.add(parse(jArray.getJSONObject(i)));
        }
    }
 
-    private Movie convert(JSONObject jObject) {
+    private Movie parse(JSONObject jObject) {
         String title =
                 jObject.getString("movie_name");
         LocalDate releaseDate =
                 LocalDate.parse(jObject.getString("release_date"), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         Duration runningTime =
                 Duration.ofMinutes(jObject.getInt("running_time"));
+
         Money basicPrice =
                 moviePricesJsonReader.getPrice(title);
         DiscountPolicy discountPolicy =
                 discountPoliciesJsonReader.getDiscountPolicy(title);
+
         return new Movie(title, releaseDate, runningTime, basicPrice, discountPolicy);
     }
 

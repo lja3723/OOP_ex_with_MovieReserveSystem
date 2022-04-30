@@ -27,7 +27,7 @@ public class MovieList {
     @Nullable
     private Movie getMovieByName(String movieName) {
         for (Movie movie: list) {
-            if (movie.getTitle().equals(movieName))
+            if (movie.getName().equals(movieName))
                 return movie;
         }
         return null;

@@ -4,7 +4,7 @@ import com.lja3723.ex.movie_reservation.value.Money;
 import org.json.JSONObject;
 
 public final class MoneyJsonReader {
-    public static Money convert(JSONObject money) {
+    public static Money parse(JSONObject money) {
         String currencyType = money.getString("currency_type");
         if (currencyType.equals("KRW")) {
             return Money.wons(money.getInt("value"));
