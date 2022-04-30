@@ -46,11 +46,9 @@ public class Screening {
 
 	@Override
 	public String toString() {
-		return String.format("Screened Movie: [ %s ]%n",
-				movie.toString()) +
-		String.format("Theatre info: [ name: %s, number: %d ]%n",
-				theatre.getName(), theatre.getNumber()) +
-		String.format("Screening Time: [ Date: %s, Time: %s, Sequence: %d ]%n",
+		return String.format("Screened Movie: %s, ", movie.getName()) +
+		String.format("Theatre number: %d, ", theatre.getNumber()) +
+		String.format("Screening Time: [ Date: %s; Time: %s; Sequence: %d; ]",
 				whenScreened.toLocalDate().toString(), whenScreened.toLocalTime().toString(), sequence);
 	}
 

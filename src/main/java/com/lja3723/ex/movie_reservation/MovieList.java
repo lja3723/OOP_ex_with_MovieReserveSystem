@@ -1,5 +1,6 @@
-package com.lja3723.ex.movie_reservation.reservable;
+package com.lja3723.ex.movie_reservation;
 
+import com.lja3723.ex.movie_reservation.reservable.Movie;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

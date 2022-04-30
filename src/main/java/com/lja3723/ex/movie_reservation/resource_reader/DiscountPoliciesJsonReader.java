@@ -4,7 +4,6 @@ import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
 import com.lja3723.ex.movie_reservation.policy.DiscountPolicy;
 import com.lja3723.ex.movie_reservation.value.*;
 import org.json.*;
-
 import java.io.FileNotFoundException;
 import java.util.*;
 

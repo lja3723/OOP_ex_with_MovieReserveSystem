@@ -34,6 +34,9 @@ public class MovieReservationSystem {
 		}
 	}
 
+	public void getMovieList() {
+	}
+
 	public Reservation createReservation(Customer customer, Screening screening, Seat seat) {
 		return new Reservation(customer, screening, seat);
 	}

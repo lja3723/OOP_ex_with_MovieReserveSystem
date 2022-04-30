@@ -31,19 +31,16 @@ public final class MovieJsonReader {
    }
 
     private Movie parse(JSONObject jObject) {
-        String title =
-                jObject.getString("movie_name");
-        LocalDate releaseDate =
-                LocalDate.parse(jObject.getString("release_date"), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        Duration runningTime =
-                Duration.ofMinutes(jObject.getInt("running_time"));
+        String name = jObject.getString("movie_name");
+        LocalDate releaseDate = LocalDate.parse(
+                jObject.getString("release_date"),
+                DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        Duration runningTime = Duration.ofMinutes(jObject.getInt("running_time"));
 
-        Money basicPrice =
-                moviePricesJsonReader.getPrice(title);
-        DiscountPolicy discountPolicy =
-                discountPoliciesJsonReader.getDiscountPolicy(title);
+        Money basicPrice = moviePricesJsonReader.getPrice(name);
+        DiscountPolicy discountPolicy =  discountPoliciesJsonReader.getDiscountPolicy(name);
 
-        return new Movie(title, releaseDate, runningTime, basicPrice, discountPolicy);
+        return new Movie(name, releaseDate, runningTime, basicPrice, discountPolicy);
     }
 
     public List<Movie> getList() {

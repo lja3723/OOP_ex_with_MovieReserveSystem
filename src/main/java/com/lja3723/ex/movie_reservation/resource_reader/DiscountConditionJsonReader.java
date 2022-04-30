@@ -1,15 +1,11 @@
 package com.lja3723.ex.movie_reservation.resource_reader;
 
 import com.lja3723.ex.movie_reservation.condition.DiscountCondition;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.*;
+import java.time.*;
+import java.util.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
-public class DiscountConditionJsonReader {
+final class DiscountConditionJsonReader {
     public static List<DiscountCondition> getConditions(JSONArray jArrayConditions) {
         List<DiscountCondition> conditions = new ArrayList<>();
         int sequence = 1;

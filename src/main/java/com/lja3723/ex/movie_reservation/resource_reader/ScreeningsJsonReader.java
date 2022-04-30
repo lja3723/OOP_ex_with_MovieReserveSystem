@@ -3,7 +3,6 @@ package com.lja3723.ex.movie_reservation.resource_reader;
 import com.lja3723.ex.movie_reservation.physical.Theatre;
 import com.lja3723.ex.movie_reservation.reservable.*;
 import org.json.*;
-
 import java.io.FileNotFoundException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;

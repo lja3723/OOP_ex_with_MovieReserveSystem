@@ -3,7 +3,7 @@ package com.lja3723.ex.movie_reservation.resource_reader;
 import com.lja3723.ex.movie_reservation.value.Money;
 import org.json.JSONObject;
 
-public final class MoneyJsonReader {
+final class MoneyJsonReader {
     public static Money parse(JSONObject money) {
         String currencyType = money.getString("currency_type");
         if (currencyType.equals("KRW")) {
