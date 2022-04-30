@@ -23,14 +23,17 @@ public final class TheatreJsonReader {
         String theatre_name = jObject.getString("theatre_name");
 
         Theatre theatre = new Theatre(theatre_number, theatre_name, rows, columns);
-        List<Seat> excludedSeats = new ArrayList<>();
-        JSONArray array = jObject.getJSONArray("excluded_seats");
-        for (int i = 0; i < array.length(); i++) {
-            excludedSeats.add(new Seat(theatre, array.getString(i)));
-        }
-        theatre.initExcludedSeats(excludedSeats);
+        theatre.initExcludedSeats(parseExcludedSeats(theatre, jObject.getJSONArray("excluded_seats")));
 
         return theatre;
+    }
+
+    private List<Seat> parseExcludedSeats(Theatre theatre, JSONArray excludedSeatsJArray) {
+        List<Seat> excludedSeats = new ArrayList<>();
+        for (int i = 0; i < excludedSeatsJArray.length(); i++) {
+            excludedSeats.add(new Seat(theatre, excludedSeatsJArray.getString(i)));
+        }
+        return excludedSeats;
     }
 
     public List<Theatre> getList() {
