@@ -1,0 +1,39 @@
+[
+	{
+		"movie_name" : "아바타",
+		"discount_policy" : {
+			"type" : "amount",
+			"value" : { "currency_type" : "KRW", "value" : 800 },
+			"conditions" : [
+				{ "type" : "sequence", "value" : 1 },
+				{ "type" : "sequence", "value" : 4 },
+				{ "type" : "period", "value" : {
+					"day_of_the_week" : "Monday",
+					"duration" : { "start" : "10:00", "end" : "14:00" } }
+				},
+				{ "type" : "period", "value" : {
+					"day_of_the_week" : "Thursday",
+					"duration" : { "start" : "18:00", "end" : "21:00" } }
+				}		
+			]
+		}		
+	},
+	{
+		"movie_name" : "타이타닉",
+		"discount_policy" : {
+			"type" : "percent",
+			"value" : 12.0,
+			"conditions" : [
+				{ "type" : "period", "value" : {
+					"day_of_the_week" : "Tuesday",
+					"duration" : { "start" : "14:00", "end" : "17:00" } }
+				},
+				{ "type" : "sequence", "value" : 2 },
+				{ "type" : "period", "value" : {
+					"day_of_the_week" : "Thursday",
+					"duration" : { "start" : "10:00", "end" : "14:00" } }
+				}		
+			]
+		}
+	}
+]

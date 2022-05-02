@@ -94,6 +94,7 @@ final class MovieCLICommand extends CLICommand {
     @Override
     public void execute(CLIController controller) {
         System.out.println("This is Movie Command");
+        System.out.println(Math.random());
     }
 }
 
