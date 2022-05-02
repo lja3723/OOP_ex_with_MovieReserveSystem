@@ -1,7 +1,6 @@
 package com.lja3723.ex.movie_reservation.cli;
 
 import com.lja3723.ex.movie_reservation.MovieReservationSystem;
-
 import java.util.Objects;
 
 public class CLIController {

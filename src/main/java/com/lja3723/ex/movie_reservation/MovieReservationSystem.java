@@ -6,7 +6,6 @@ import com.lja3723.ex.movie_reservation.resource_reader.*;
 import com.lja3723.ex.movie_reservation.value.Money;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 public class MovieReservationSystem {
 	private MultiplexCinema cinema;

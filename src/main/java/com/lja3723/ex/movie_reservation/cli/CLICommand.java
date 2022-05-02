@@ -93,7 +93,7 @@ final class MovieCLICommand extends CLICommand {
 
     @Override
     public void execute(CLIController controller) {
-
+        System.out.println("This is Movie Command");
     }
 }
 
@@ -105,6 +105,6 @@ final class ScreeningCLICommand extends CLICommand {
 
     @Override
     public void execute(CLIController controller) {
-
+        System.out.println("This is Screening Command");
     }
 }
