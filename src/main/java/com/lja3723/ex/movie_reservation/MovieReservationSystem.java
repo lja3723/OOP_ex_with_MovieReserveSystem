@@ -36,8 +36,16 @@ public class MovieReservationSystem {
 		}
 	}
 
-	public List<String> getMovieList() {
-		return movieList.getMovieList();
+	public MovieList getMovieList() {
+		return movieList;
+	}
+
+	public ScreeningList getScreeningList() {
+		return screeningList;
+	}
+
+	public String getVersion() {
+		return "영화 예약 시스템(Movie Reservation System) v.0.1";
 	}
 
 	public Reservation createReservation(Customer customer, Screening screening, Seat seat) {

@@ -38,8 +38,6 @@ public class Screening {
 	}
 
 
-
-
 	public boolean isSequence(int sequence) {
 		return this.sequence == sequence;
 	}
