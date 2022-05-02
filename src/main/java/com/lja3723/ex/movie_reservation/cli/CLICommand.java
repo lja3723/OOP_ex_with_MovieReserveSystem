@@ -16,14 +16,7 @@ final class CLICommandFactory {
         String mainMsg = msgList.get(0);
         List<String> parameters = msgList.subList(1, msgList.size());
 
-        CLICommandEnum command;
-        try {
-            command = CLICommandEnum.valueOf(mainMsg);
-        } catch (IllegalArgumentException e) {
-            command = CLICommandEnum.none;
-        }
-
-        return CLICommandEnum.getCommand(command, parameters);
+        return CLICommandEnum.getCommand(CLICommandEnum.getEnum(mainMsg), parameters);
     }
 }
 

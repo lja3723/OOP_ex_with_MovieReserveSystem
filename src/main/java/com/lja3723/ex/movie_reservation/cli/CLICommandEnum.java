@@ -6,6 +6,16 @@ public enum CLICommandEnum {
     none,
     help, exit, version, movie, screening;
 
+    public static CLICommandEnum getEnum(String commandName) {
+        CLICommandEnum command;
+        try {
+            command = CLICommandEnum.valueOf(commandName);
+        } catch (IllegalArgumentException e) {
+            command = CLICommandEnum.none;
+        }
+        return command;
+    }
+
     public static String getUsage(CLICommandEnum command) {
         return switch (command) {
             case help -> "명령어 목록을 출력합니다.";
@@ -13,7 +23,7 @@ public enum CLICommandEnum {
             case version -> "프로그램 버전을 출력합니다.";
             case movie -> "영화와 관련된 명령을 수행합니다.";
             case screening -> "상영 정보와 관련된 명령을 수행합니다.";
-            default -> "";
+            case none -> "";
         };
     }
 
