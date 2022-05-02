@@ -13,10 +13,7 @@ abstract class CLICommand {
 final class CLICommandFactory {
     public static CLICommand getCommand(String clientMessage) {
         List<String> msgList = Arrays.asList(clientMessage.split(" "));
-        String mainMsg = msgList.get(0);
-        List<String> parameters = msgList.subList(1, msgList.size());
-
-        return CLICommandEnum.getCommand(CLICommandEnum.getEnum(mainMsg), parameters);
+        return CLICommandEnum.getCommand(msgList.get(0), msgList.subList(1, msgList.size()));
     }
 }
 
