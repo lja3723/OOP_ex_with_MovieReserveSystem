@@ -13,11 +13,19 @@ abstract class CLICommand {
 final class CLICommandFactory {
     public static CLICommand getCommand(String clientMessage) {
         List<String> msgList = Arrays.asList(clientMessage.split(" "));
-        return CLICommandEnum.getCommand(msgList.get(0), msgList.subList(1, msgList.size()));
+
+        String commandName = msgList.get(0);
+        List<String> parameters = translateParameters(msgList.subList(1, msgList.size()));
+
+        return CLICommandEnum.getCommand(commandName, parameters);
+    }
+
+    private static List<String> translateParameters(List<String> parameters) {
+        return parameters;
     }
 }
 
-class NoneCLICommand extends CLICommand {
+final class NoneCLICommand extends CLICommand {
     public NoneCLICommand(List<String> parameters) { super(parameters); }
     @Override
     public void execute(CLIController controller) {
@@ -25,7 +33,7 @@ class NoneCLICommand extends CLICommand {
     }
 }
 
-class IntroCLICommand extends CLICommand {
+final class IntroCLICommand extends CLICommand {
     public IntroCLICommand(List<String> parameters) { super(parameters); }
 
     @Override
@@ -35,7 +43,7 @@ class IntroCLICommand extends CLICommand {
     }
 }
 
-class HelpCLICommand extends CLICommand {
+final class HelpCLICommand extends CLICommand {
     private final Map<String, String> cmdList = new HashMap<>();
     public HelpCLICommand(List<String> parameters) {
         super(parameters);
@@ -56,7 +64,7 @@ class HelpCLICommand extends CLICommand {
     }
 }
 
-class ExitCLICommand extends CLICommand {
+final class ExitCLICommand extends CLICommand {
     public ExitCLICommand(List<String> parameters) { super(parameters); }
     @Override
     public void execute(CLIController controller) {
@@ -65,7 +73,7 @@ class ExitCLICommand extends CLICommand {
     }
 }
 
-class VersionCLICommand extends CLICommand {
+final class VersionCLICommand extends CLICommand {
 
     public VersionCLICommand(List<String> parameters) {
         super(parameters);
@@ -77,7 +85,7 @@ class VersionCLICommand extends CLICommand {
     }
 }
 
-class MovieCLICommand extends CLICommand {
+final class MovieCLICommand extends CLICommand {
 
     public MovieCLICommand(List<String> parameters) {
         super(parameters);
@@ -89,7 +97,7 @@ class MovieCLICommand extends CLICommand {
     }
 }
 
-class ScreeningCLICommand extends CLICommand {
+final class ScreeningCLICommand extends CLICommand {
 
     public ScreeningCLICommand(List<String> parameters) {
         super(parameters);
