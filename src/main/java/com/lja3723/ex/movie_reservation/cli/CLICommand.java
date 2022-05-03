@@ -1,22 +1,33 @@
 package com.lja3723.ex.movie_reservation.cli;
 
 import java.util.*;
+import org.apache.commons.cli.*;
 
 abstract class CLICommand {
+    private final static List<String> emptyParam = new ArrayList<>();
     protected List<String> parameters;
+
     public CLICommand(List<String> parameters) {
-        this.parameters = parameters;
+        setParameters(parameters);
     }
+
+    public CLICommand setParameters(List<String> parameters) {
+        if (parameters == null)
+            parameters = emptyParam;
+        this.parameters = parameters;
+        return this;
+    }
+
     abstract public void execute(CLIController controller);
 }
 
 final class CLICommandFactory {
+    private CLICommandFactory() {}
+
     public static CLICommand getCommand(String clientMessage) {
         List<String> msgList = Arrays.asList(clientMessage.split(" "));
-
-        String commandName = msgList.get(0);
+        CLICommandEnum commandName = CLICommandEnum.getEnum(msgList.get(0));
         List<String> parameters = translateParameters(msgList.subList(1, msgList.size()));
-
         return CLICommandEnum.getCommand(commandName, parameters);
     }
 

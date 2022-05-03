@@ -1,21 +1,28 @@
 package com.lja3723.ex.movie_reservation.cli;
 
-import java.util.List;
+import java.util.*;
 
 public enum CLICommandEnum {
     none,
     help, exit, version, movie, screening;
 
-    public static CLICommandEnum getEnum(String commandName) {
+    private final static NoneCLICommand noneCmd = new NoneCLICommand(null);
+    private final static HelpCLICommand helpCmd = new HelpCLICommand(null);
+    private final static ExitCLICommand exitCmd = new ExitCLICommand(null);
+    private final static VersionCLICommand versionCmd = new VersionCLICommand(null);
+    private final static MovieCLICommand movieCmd = new MovieCLICommand(null);
+    private final static ScreeningCLICommand screeningCmd = new ScreeningCLICommand(null);
+
+    public static CLICommandEnum getEnum(String cmdName) {
         try {
-            return valueOf(commandName);
+            return valueOf(cmdName.toLowerCase());
         } catch (IllegalArgumentException e) {
             return none;
         }
     }
 
-    public static String getUsage(CLICommandEnum command) {
-        return switch (command) {
+    public static String getUsage(CLICommandEnum cmdName) {
+        return switch(cmdName) {
             case none -> "";
             case help -> "명령어 목록을 출력합니다.";
             case exit -> "프로그램을 종료합니다.";
@@ -25,14 +32,18 @@ public enum CLICommandEnum {
         };
     }
 
-    public static CLICommand getCommand(String commandName, List<String> parameters) {
-        return switch (getEnum(commandName)) {
-            case none -> new NoneCLICommand(parameters);
-            case help -> new HelpCLICommand(parameters);
-            case exit -> new ExitCLICommand(parameters);
-            case version -> new VersionCLICommand(parameters);
-            case movie -> new MovieCLICommand(parameters);
-            case screening -> new ScreeningCLICommand(parameters);
+    public static CLICommand getCommand(CLICommandEnum cmdName) {
+        return switch (cmdName) {
+            case none -> noneCmd;
+            case help -> helpCmd;
+            case exit -> exitCmd;
+            case version -> versionCmd;
+            case movie -> movieCmd;
+            case screening -> screeningCmd;
         };
+    }
+
+    public static CLICommand getCommand(CLICommandEnum cmdName, List<String> parameters) {
+        return getCommand(cmdName).setParameters(parameters);
     }
 }

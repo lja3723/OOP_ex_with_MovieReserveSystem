@@ -62,7 +62,7 @@ public class Theatre {
 	/*
 	public Seat getSeat(String seatPosition) {
 		int index = seats.indexOf(new Seat(this, seatPosition));
-		return index != -1 ? seats.get(index) : null;
+		return index != -1 ? seats.getEnum(index) : null;
 	}*/
 
 	public final List<Seat> getSeats() {
