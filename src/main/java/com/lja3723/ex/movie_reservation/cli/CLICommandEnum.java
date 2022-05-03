@@ -11,12 +11,12 @@ public enum CLICommandEnum {
     private final static List<CLICommandEnum> nonExecutableEnums = new ArrayList<>(Arrays.asList(
             none, intro
     ));
-    private final static NoneCLICommand noneCmd = new NoneCLICommand(null);
-    private final static HelpCLICommand helpCmd = new HelpCLICommand(null);
-    private final static ExitCLICommand exitCmd = new ExitCLICommand(null);
-    private final static VersionCLICommand versionCmd = new VersionCLICommand(null);
-    private final static MovieCLICommand movieCmd = new MovieCLICommand(null);
-    private final static ScreeningCLICommand screeningCmd = new ScreeningCLICommand(null);
+    private final static NoneCLICommand noneCommand = new NoneCLICommand(null);
+    private final static HelpCLICommand helpCommand = new HelpCLICommand(null);
+    private final static ExitCLICommand exitCommand = new ExitCLICommand(null);
+    private final static VersionCLICommand versionCommand = new VersionCLICommand(null);
+    private final static MovieCLICommand movieCommand = new MovieCLICommand(null);
+    private final static ScreeningCLICommand screeningCommand = new ScreeningCLICommand(null);
 
     //새로운 명령어 싱글톤 변수를 위에 추가합니다.
 
@@ -34,32 +34,32 @@ public enum CLICommandEnum {
         return executableEnums.toArray(new CLICommandEnum[0]);
     }
 
-    public static CLICommandEnum getEnum(String cmdName) {
+    public static CLICommandEnum getEnum(String commandName) {
         try {
-            var command = valueOf(cmdName.toLowerCase());
+            CLICommandEnum command = valueOf(commandName.toLowerCase());
             return isNonExecutableEnum(command) ? none : command;
         } catch (IllegalArgumentException e) {
             return none;
         }
     }
 
-    public static CLICommand getCommand(CLICommandEnum cmdName) {
-        if (isNonExecutableEnum(cmdName)) {
-            return noneCmd;
+    public static CLICommand getCommand(CLICommandEnum commandName) {
+        if (isNonExecutableEnum(commandName)) {
+            return noneCommand;
         }
-        return switch (cmdName) {
-            default -> noneCmd;
-            case help -> helpCmd;
-            case exit -> exitCmd;
-            case version -> versionCmd;
-            case movie -> movieCmd;
-            case screening -> screeningCmd;
+        return switch (commandName) {
+            default -> noneCommand;
+            case help -> helpCommand;
+            case exit -> exitCommand;
+            case version -> versionCommand;
+            case movie -> movieCommand;
+            case screening -> screeningCommand;
 
             //새로운 명령어 객체 반환 구문을 위에 추가합니다.
         };
     }
 
-    public static CLICommand getCommand(CLICommandEnum cmdName, List<String> parameters) {
-        return getCommand(cmdName).setParameters(parameters);
+    public static CLICommand getCommand(CLICommandEnum commandName, List<String> parameters) {
+        return getCommand(commandName).setParameters(parameters);
     }
 }
