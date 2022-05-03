@@ -3,7 +3,7 @@ package com.lja3723.ex.movie_reservation.cli;
 import java.util.*;
 
 public enum CLICommandEnum {
-    none,
+    none, intro,    //특수 명령
     help, exit, version, movie, screening;
 
     private final static NoneCLICommand noneCmd = new NoneCLICommand(null);
@@ -13,6 +13,17 @@ public enum CLICommandEnum {
     private final static MovieCLICommand movieCmd = new MovieCLICommand(null);
     private final static ScreeningCLICommand screeningCmd = new ScreeningCLICommand(null);
 
+    public static CLICommandEnum[] executableValues() {
+        List<CLICommandEnum> executableEnums = new ArrayList<>(Arrays.stream(values()).toList());
+
+        //특수 명령 제거
+        executableEnums.remove(none);
+        executableEnums.remove(intro);
+
+        //특수 명령 제거한 리스트 반환
+        return executableEnums.toArray(new CLICommandEnum[0]);
+    }
+
     public static CLICommandEnum getEnum(String cmdName) {
         try {
             return valueOf(cmdName.toLowerCase());
@@ -21,20 +32,9 @@ public enum CLICommandEnum {
         }
     }
 
-    public static String getUsage(CLICommandEnum cmdName) {
-        return switch(cmdName) {
-            case none -> "";
-            case help -> "명령어 목록을 출력합니다.";
-            case exit -> "프로그램을 종료합니다.";
-            case version -> "프로그램 버전을 출력합니다.";
-            case movie -> "영화와 관련된 명령을 수행합니다.";
-            case screening -> "상영 정보와 관련된 명령을 수행합니다.";
-        };
-    }
-
     public static CLICommand getCommand(CLICommandEnum cmdName) {
         return switch (cmdName) {
-            case none -> noneCmd;
+            case none, intro -> noneCmd;    //특수 명령
             case help -> helpCmd;
             case exit -> exitCmd;
             case version -> versionCmd;
