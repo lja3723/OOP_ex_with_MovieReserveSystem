@@ -1,10 +1,9 @@
 package com.lja3723.ex.movie_reservation.cli;
 
 import java.util.*;
-import org.apache.commons.cli.*;
 
 abstract class CLICommand {
-    private final static List<String> emptyParam = new ArrayList<>();
+    private final static List<String> emptyParameter = new ArrayList<>();
     protected List<String> parameters;
 
     public CLICommand(List<String> parameters) {
@@ -12,15 +11,13 @@ abstract class CLICommand {
     }
 
     public CLICommand setParameters(List<String> parameters) {
-        if (parameters == null)
-            parameters = emptyParam;
-        this.parameters = parameters;
+        this.parameters = (null == parameters) ? emptyParameter : parameters;
         return this;
     }
 
     abstract public void execute(CLIController controller);
 
-    abstract public String getUsage();
+    abstract public String description();
 }
 
 final class CLICommandFactory {
@@ -31,6 +28,10 @@ final class CLICommandFactory {
         CLICommandEnum commandName = CLICommandEnum.getEnum(msgList.get(0));
         List<String> parameters = translateParameters(msgList.subList(1, msgList.size()));
         return CLICommandEnum.getCommand(commandName, parameters);
+    }
+
+    public static CLICommand getCommand(CLICommandEnum commandName) {
+        return CLICommandEnum.getCommand(commandName);
     }
 
     private static List<String> translateParameters(List<String> parameters) {
@@ -47,7 +48,7 @@ final class NoneCLICommand extends CLICommand {
     }
 
     @Override
-    public String getUsage() {
+    public String description() {
         return "";
     }
 }
@@ -63,7 +64,7 @@ final class IntroCLICommand extends CLICommand {
     }
 
     @Override
-    public String getUsage() {
+    public String description() {
         return "";
     }
 }
@@ -77,8 +78,8 @@ final class HelpCLICommand extends CLICommand {
     public void execute(CLIController controller) {
         final Map<String, String> cmdList = new HashMap<>();
 
-        for (CLICommandEnum cmd : CLICommandEnum.executableValues())
-            cmdList.put(cmd.name(), CLICommandEnum.getCommand(cmd).getUsage());
+        for (CLICommandEnum cmd : CLICommandEnum.valuesExecutable())
+            cmdList.put(cmd.name(), CLICommandFactory.getCommand(cmd).description());
 
         int longestLength = 0;
         for (String command: cmdList.keySet())
@@ -90,7 +91,7 @@ final class HelpCLICommand extends CLICommand {
     }
 
     @Override
-    public String getUsage() {
+    public String description() {
         return "명령어 목록을 출력합니다.";
     }
 }
@@ -104,7 +105,7 @@ final class ExitCLICommand extends CLICommand {
     }
 
     @Override
-    public String getUsage() {
+    public String description() {
         return "프로그램을 종료합니다.";
     }
 }
@@ -121,7 +122,7 @@ final class VersionCLICommand extends CLICommand {
     }
 
     @Override
-    public String getUsage() {
+    public String description() {
         return "프로그램 버전을 출력합니다.";
     }
 }
@@ -139,7 +140,7 @@ final class MovieCLICommand extends CLICommand {
     }
 
     @Override
-    public String getUsage() {
+    public String description() {
         return "영화와 관련된 명령을 수행합니다.";
     }
 }
@@ -156,7 +157,7 @@ final class ScreeningCLICommand extends CLICommand {
     }
 
     @Override
-    public String getUsage() {
+    public String description() {
         return "상영 정보와 관련된 명령을 수행합니다.";
     }
 }

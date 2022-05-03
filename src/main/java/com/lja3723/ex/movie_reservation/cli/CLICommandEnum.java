@@ -6,6 +6,8 @@ public enum CLICommandEnum {
     none, intro,    //특수 명령
     help, exit, version, movie, screening;
 
+    //새로운 명령어를 위에 추가합니다.
+
     private final static List<CLICommandEnum> nonExecutableEnums = new ArrayList<>(Arrays.asList(
             none, intro
     ));
@@ -16,11 +18,13 @@ public enum CLICommandEnum {
     private final static MovieCLICommand movieCmd = new MovieCLICommand(null);
     private final static ScreeningCLICommand screeningCmd = new ScreeningCLICommand(null);
 
+    //새로운 명령어 싱글톤 변수를 위에 추가합니다.
+
     private static boolean isNonExecutableEnum(CLICommandEnum command) {
         return nonExecutableEnums.contains(command);
     }
 
-    public static CLICommandEnum[] executableValues() {
+    public static CLICommandEnum[] valuesExecutable() {
         final List<CLICommandEnum> executableEnums = new ArrayList<>(Arrays.stream(values()).toList());
 
         for (CLICommandEnum each: nonExecutableEnums) {
@@ -50,6 +54,8 @@ public enum CLICommandEnum {
             case version -> versionCmd;
             case movie -> movieCmd;
             case screening -> screeningCmd;
+
+            //새로운 명령어 객체 반환 구문을 위에 추가합니다.
         };
     }
 
