@@ -27,6 +27,7 @@ public class CLIView {
     }
 
     public void getClientMessage() {
+        System.out.println();
         System.out.print("> ");
         controller.setCommand(CLICommandFactory.getCommand(new Scanner(System.in).nextLine()));
     }

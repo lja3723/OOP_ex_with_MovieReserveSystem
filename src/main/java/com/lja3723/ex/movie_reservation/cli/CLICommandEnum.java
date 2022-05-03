@@ -4,8 +4,7 @@ import java.util.*;
 
 public enum CLICommandEnum {
     none, intro,    //특수 명령
-    help, exit, version, movie, screening;
-
+    help, exit, version, movie, screening, cmdtest;
     //새로운 명령어를 위에 추가합니다.
 
     private final static List<CLICommandEnum> nonExecutableEnums = new ArrayList<>(Arrays.asList(
@@ -17,7 +16,7 @@ public enum CLICommandEnum {
     private final static VersionCLICommand versionCommand = new VersionCLICommand(null);
     private final static MovieCLICommand movieCommand = new MovieCLICommand(null);
     private final static ScreeningCLICommand screeningCommand = new ScreeningCLICommand(null);
-
+    private final static CmdTestCLICommand cmdTestCommand = new CmdTestCLICommand(null);
     //새로운 명령어 싱글톤 변수를 위에 추가합니다.
 
     private static boolean isNonExecutableEnum(CLICommandEnum command) {
@@ -54,10 +53,10 @@ public enum CLICommandEnum {
             case version -> versionCommand;
             case movie -> movieCommand;
             case screening -> screeningCommand;
-
-            //새로운 명령어 객체 반환 구문을 위에 추가합니다.
+            case cmdtest -> cmdTestCommand;
         };
     }
+    //새로운 명령어 객체 반환 구문을 메서드 내부 스위치 구문에 추가합니다.
 
     public static CLICommand getCommand(CLICommandEnum commandName, List<String> parameters) {
         return getCommand(commandName).setParameters(parameters);

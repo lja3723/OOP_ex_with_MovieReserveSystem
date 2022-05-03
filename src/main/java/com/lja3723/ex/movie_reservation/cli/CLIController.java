@@ -18,7 +18,7 @@ public class CLIController {
     }
 
     public void setCommand(CLICommand command) {
-        this.command = Objects.requireNonNullElseGet(command, () -> noCommand);
+        this.command = Objects.requireNonNullElse(command, noCommand);
     }
 
     public void executeCommand() {
@@ -26,7 +26,7 @@ public class CLIController {
     }
 
     public String getVersion() {
-        return MRS.getVersion();
+        return MRS.version();
     }
 
     public void exitProgram() {
