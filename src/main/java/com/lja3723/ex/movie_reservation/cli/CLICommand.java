@@ -1,5 +1,7 @@
 package com.lja3723.ex.movie_reservation.cli;
 
+import org.apache.commons.cli.*;
+
 import java.util.*;
 
 abstract class CLICommand {
@@ -136,7 +138,32 @@ final class MovieCLICommand extends CLICommand {
     @Override
     public void execute(CLIController controller) {
         System.out.println("This is Movie Command");
-        System.out.println(Math.random());
+        System.out.println("parameters: " + parameters);
+        Options options = new Options()
+                .addOption("ls", "list", false, "영화 목록을 출력합니다.")
+                .addOption("val", "value", true, "옵션 값이 있는 옵션 테스트")
+                .addOption("params", false, "주어진 파라미터를 출력합니다.");
+        CommandLineParser parser = new DefaultParser();
+
+        if (parameters.isEmpty()) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("movie", options);
+        }
+
+        try {
+            CommandLine command = parser.parse(options, parameters.toArray(new String[0]));
+            for (var option : command.getOptions()) {
+                System.out.println(option);
+            }
+            for (var option: command.getArgs()) {
+                System.out.println(option);
+            }
+
+        } catch (ParseException e) {
+            System.err.println("Parsing failed.  Reason: " + e.getMessage());
+        }
+
+
     }
 
     @Override

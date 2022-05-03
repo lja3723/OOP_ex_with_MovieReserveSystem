@@ -27,12 +27,13 @@ public class MovieReservationSystem {
 			this.cinema = new MultiplexCinema(cinemaName, cinemaFinance, theatresReader.getList());
 			this.movieList = new MovieList(moviesReader.getList());
 			this.screeningList = new ScreeningList(screeningsReader.getList());
-
-			System.out.println("MRS 생성자 실행 완료");
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String getCinemaName() {
+		return cinema.getName();
 	}
 
 	public MovieList getMovieList() {
@@ -43,8 +44,8 @@ public class MovieReservationSystem {
 		return screeningList;
 	}
 
-	public String getVersion() {
-		return "영화 예약 시스템(Movie Reservation System) v.0.1";
+	public String version() {
+		return "Movie Reservation System(MRS) v.0.1";
 	}
 
 	public Reservation createReservation(Customer customer, Screening screening, Seat seat) {
