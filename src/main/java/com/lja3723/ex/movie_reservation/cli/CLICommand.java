@@ -3,6 +3,7 @@ package com.lja3723.ex.movie_reservation.cli;
 import org.apache.commons.cli.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 abstract class CLICommand {
     private final static List<String> emptyParameter = new ArrayList<>();
@@ -165,6 +166,7 @@ final class ScreeningCLICommand extends CLICommand {
 
 //apache commons cli test 명령
 final class CmdTestCLICommand extends CLICommand {
+    private static int flag = 0;
 
     public CmdTestCLICommand(List<String> parameters) {
         super(parameters);
@@ -172,8 +174,34 @@ final class CmdTestCLICommand extends CLICommand {
 
     @Override
     public void execute(CLIController controller) {
-        List<String> params = List.of("-ls", "arg1", "arg2 arg3", "--value", "arg4 arg5", "arg6");
-        List<String> lineParam = List.of("-ls arg1 \"arg2 arg3\" --value \"arg4 arg5\" arg6");
+        List<String> params;
+        if (flag == 0)
+            params = List.of("-ls", "arg1", "\"arg2 arg3\"", "--value", "\"arg4 arg5\"", "arg6");
+        else if (flag == 1)
+            params = List.of("-ls", "arg1", "arg2 arg3", "--value", "arg4 arg5", "arg6");
+        else {
+            //통으로 들어온 문자열을 플래그가 1인 경우(위 리스트)로 가공하는 알고리즘임
+            String inlineString = "-ls arg1 \"arg2 arg3\" --value \"arg4 arg5\" arg6";
+
+            //큰따옴표(") 로 먼저 나눈 뒤 나눠진 각 요소를 trim한다.
+            List<String> firstParseList = new ArrayList<>(Arrays.stream(inlineString.split("\"")).map(String::trim).toList());
+
+            //큰따옴표로 감싸지지 않았던 나머지 요소를 스페이스 문자( )로 나누면서, 하나의 리스트에 담아낸다.
+            List<String> secondParseList = new ArrayList<>();
+            for (int i = 0; i < firstParseList.size(); i++) {
+                if (i % 2 == 0) { //짝수인 경우
+                    secondParseList.addAll(Arrays.asList(firstParseList.get(i).split(" ")));
+                }
+                else {
+                    secondParseList.add(firstParseList.get(i));
+                }
+            }
+
+            //결과를 저장한다.
+            params = secondParseList;
+        }
+        flag++;
+        flag %= 3;
 
         System.out.println("parameters: " + params);
         Options options = new Options()
@@ -182,10 +210,12 @@ final class CmdTestCLICommand extends CLICommand {
                 .addOption("params", false, "주어진 파라미터를 출력합니다.");
         CommandLineParser parser = new DefaultParser();
 
+        /*
         if (params.isEmpty()) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("movie", options);
         }
+         */
 
         try {
             CommandLine command = parser.parse(options, params.toArray(new String[0]));
