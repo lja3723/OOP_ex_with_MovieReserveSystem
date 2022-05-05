@@ -6,9 +6,15 @@ import java.util.*;
 abstract class CLICommand {
     private final static List<String> emptyParameter = new ArrayList<>();
     private List<String> parameters;
+    private final Options options;
 
     public CLICommand(List<String> parameters) {
         setParameters(parameters);
+        this.options = new Options();
+        options.addOption(Option.builder("help")
+                .desc("명령어 사용법을 출력합니다.")
+                .build());
+        initOptions(options);
     }
 
     public CLICommand setParameters(List<String> parameters) {
@@ -17,10 +23,29 @@ abstract class CLICommand {
     }
 
     public void execute(CLIController controller) {
-        execute(controller, parameters);
+        if (parameters.size() == 1 && parameters.get(0).equals("-help")) {
+            printHelp();
+        }
+        else {
+            try {
+                execute(controller, new DefaultParser().parse(options, parameters.toArray(new String[0])));
+            } catch (ParseException e) {
+                System.out.println("잘못된 파라미터입니다. (원인: " + e.getMessage() + ")");
+            }
+        }
     }
-    abstract protected void execute(CLIController controller, List<String> parameters);
 
+    public void printHelp() {
+        System.out.println(description());
+        new HelpFormatter().printHelp(getCmdLineSyntax(), options);
+    }
+
+    protected String getCmdLineSyntax() {
+        return commandName() + " [옵션]";
+    }
+    abstract public String commandName();
+    abstract protected void initOptions(Options options);
+    abstract protected void execute(CLIController controller, CommandLine command);
     abstract public String description();
 }
 
@@ -120,8 +145,17 @@ final class CLICommandFactory {
 //특수 명령
 final class NoneCLICommand extends CLICommand {
     public NoneCLICommand(List<String> parameters) { super(parameters); }
+
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
+    public String commandName() {
+        return "none";
+    }
+
+    @Override
+    protected void initOptions(Options options) {  }
+
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
         System.out.println("알 수 없는 명령어입니다. 명령어 목록을 보시려면 help를 입력하십시오.");
     }
 
@@ -136,15 +170,21 @@ final class IntroCLICommand extends CLICommand {
     public IntroCLICommand(List<String> parameters) { super(parameters); }
 
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
+    public String commandName() {
+        return "intro";
+    }
+
+    @Override
+    protected void initOptions(Options options) { }
+
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
         System.out.println(controller.getVersion() + "이 실행되었습니다.");
         System.out.println("명령어 목록을 보시려면 help를 입력하십시오.");
     }
 
     @Override
-    public String description() {
-        return "";
-    }
+    public String description() { return ""; }
 }
 
 final class HelpCLICommand extends CLICommand {
@@ -153,18 +193,44 @@ final class HelpCLICommand extends CLICommand {
     }
 
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
-        final Map<String, String> cmdList = new HashMap<>();
+    protected String getCmdLineSyntax() {
+        return super.getCmdLineSyntax() + " [명령어]";
+    }
 
-        for (CLICommandEnum cmd : CLICommandEnum.valuesExecutable())
-            cmdList.put(cmd.name(), CLICommandEnum.getCommand(cmd).description());
+    @Override
+    public String commandName() {
+        return "help";
+    }
 
-        int longestLength = 0;
-        for (String command: cmdList.keySet())
-            longestLength = Math.max(longestLength, command.length());
+    @Override
+    protected void initOptions(Options options) { }
 
-        for (String command: cmdList.keySet()) {
-            System.out.printf("%-" + (longestLength + 3) + "s %s%n", command, cmdList.get(command));
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
+        if (command.getArgList().isEmpty()) {
+            final Map<String, String> cmdList = new HashMap<>();
+
+            for (CLICommandEnum cmd : CLICommandEnum.valuesExecutable())
+                cmdList.put(cmd.name(), CLICommandEnum.getCommand(cmd).description());
+
+            int longestLength = 0;
+            for (String cmd: cmdList.keySet())
+                longestLength = Math.max(longestLength, cmd.length());
+
+            for (String cmd: cmdList.keySet()) {
+                System.out.printf("%-" + (longestLength + 3) + "s %s%n", cmd, cmdList.get(cmd));
+            }
+        }
+        else {
+            String arg = command.getArgs()[0];
+            CLICommandEnum cmdEnum = CLICommandEnum.getEnum(arg);
+
+            if (cmdEnum == CLICommandEnum.none) {
+                System.out.println("\"" + arg + "\": " + "알 수 없는 명령어입니다.");
+                return;
+            }
+
+            CLICommandEnum.getCommand(cmdEnum).printHelp();
         }
     }
 
@@ -176,8 +242,17 @@ final class HelpCLICommand extends CLICommand {
 
 final class ExitCLICommand extends CLICommand {
     public ExitCLICommand(List<String> parameters) { super(parameters); }
+
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
+    public String commandName() {
+        return "exit";
+    }
+
+    @Override
+    protected void initOptions(Options options) { }
+
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
         System.out.println(controller.getVersion() + "을 종료합니다.");
         controller.exitProgram();
     }
@@ -195,7 +270,15 @@ final class VersionCLICommand extends CLICommand {
     }
 
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
+    public String commandName() {
+        return "version";
+    }
+
+    @Override
+    protected void initOptions(Options options) { }
+
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
         System.out.println(controller.getVersion());
     }
 
@@ -212,54 +295,43 @@ final class MovieCLICommand extends CLICommand {
     }
 
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
-        System.out.println("This is Movie Command");
-        System.out.println("parameters: " + parameters);
+    public String commandName() {
+        return "movie";
+    }
 
-        Options options = new Options();
+    @Override
+    protected void initOptions(Options options) {
         options.addOption(Option.builder("ls")
                 .longOpt("list")
                 .hasArg(false)
                 .desc("영화 목록을 출력합니다.")
                 .build());
-        options.addOption(Option.builder("help")
-                .hasArg(false)
-                .desc("명령어 사용법을 출력합니다.")
-                .build());
         options.addOption(Option.builder("info")
                 .longOpt("information")
                 .hasArg()
                 .argName("movie name")
-                        .desc("영화 이름에 대한 영화 정보를 출력합니다.")
+                .desc("영화 이름에 대한 영화 정보를 출력합니다.")
                 .build());
+    }
 
-        if (parameters.isEmpty())
-            new HelpFormatter() .printHelp("movie [option]", options);
-
-        try {
-            CommandLine command = new DefaultParser().parse(options, parameters.toArray(new String[0]));
-
-            if (command.hasOption("help")) {
-                new HelpFormatter() .printHelp("movie [option]", options);
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
+        if (command.hasOption("ls")) {
+            int index = 0;
+            for (String movieName: controller.getMovieList()) {
+                System.out.println("Movie " + (++index) + ": " + movieName);
             }
-            else if (command.hasOption("ls")) {
-                int index = 0;
-                for (String movieName: controller.getMovieList()) {
-                    System.out.println("Movie " + (++index) + ": " + movieName);
-                }
+        }
+        else if (command.hasOption("info")) {
+            String movieName = command.getOptionValue("info");
+            try {
+                System.out.println(controller.getMovie(movieName));
+            } catch (IllegalArgumentException e) {
+                System.out.println("다음의 이름을 가진 영화를 찾을 수 없습니다: " + movieName);
             }
-            else if (command.hasOption("info")) {
-                String movieName = command.getOptionValue("info");
-                try {
-                    System.out.println(controller.getMovie(movieName));
-                } catch (IllegalArgumentException e) {
-                    System.out.println("다음의 이름을 가진 영화를 찾을 수 없습니다.");
-                    System.out.println(movieName);
-                }
-            }
-
-        } catch (ParseException e) {
-            System.out.println("인수가 잘못되었습니다. 원인: " + e.getMessage());
+        }
+        else {
+            printHelp();
         }
     }
 
@@ -276,7 +348,15 @@ final class ScreeningCLICommand extends CLICommand {
     }
 
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
+    public String commandName() {
+        return "screening";
+    }
+
+    @Override
+    protected void initOptions(Options options) { }
+
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
         System.out.println("This is Screening Command");
     }
 
@@ -293,7 +373,15 @@ final class CmdTestCLICommand extends CLICommand {
     }
 
     @Override
-    public void execute(CLIController controller, List<String> parameters) {
+    public String commandName() {
+        return "cmdtest";
+    }
+
+    @Override
+    protected void initOptions(Options options) { }
+
+    @Override
+    public void execute(CLIController controller, CommandLine command) {
 
     }
 
