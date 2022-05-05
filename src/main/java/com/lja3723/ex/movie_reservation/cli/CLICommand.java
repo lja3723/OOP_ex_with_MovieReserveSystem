@@ -1,10 +1,7 @@
 package com.lja3723.ex.movie_reservation.cli;
 
 import org.apache.commons.cli.*;
-
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 abstract class CLICommand {
     private final static List<String> emptyParameter = new ArrayList<>();
@@ -31,68 +28,92 @@ final class CLICommandFactory {
     private CLICommandFactory() {}
 
     public static CLICommand getCommand(String clientMessage) {
-        List<String> msgList = Arrays.asList(clientMessage.split(" "));
-        CLICommandEnum commandName = CLICommandEnum.getEnum(msgList.get(0));
-        List<String> parameters = translateParameters(msgList.subList(1, msgList.size()));
-        return CLICommandEnum.getCommand(commandName, parameters);
+        CLICommandEnum commandName;
+        String parameter;
+
+        if (clientMessage.contains(" ")) {
+            commandName = CLICommandEnum.getEnum(clientMessage.substring(0, clientMessage.indexOf(" ")));
+            parameter = clientMessage.substring(clientMessage.indexOf(" "));
+        }
+        else {
+            commandName = CLICommandEnum.getEnum(clientMessage);
+            parameter = "";
+        }
+
+        return CLICommandEnum.getCommand(commandName, parseParameter(parameter));
     }
 
-    private static List<String> translateParameters(List<String> parameters) {
+
+    private static List<String> parseParameter(String parameter) {
     /*
-        translateParameters([arg1, -arg2, "arg3, -arg4", --arg5, "arg6, arg7", arg8, -arg9])
+        parseParameter(arg1 -arg2 "arg3 -arg4" --arg5 "arg6 arg7" arg8 -arg9])
             return -> [arg1, -arg2, arg3 -arg4, --arg5, arg6 arg7, arg8, -arg9]
-        translateParameters([a1, "", a2, "a3", a4])
+        parseParameter(a1 "" a2 "a3" a4)
             return -> [a1, a2, a3, a4]
-        translateParameters([a1, a2, "a3, a4", a5, "a6, a7, a8", a9]
+        parseParameter(a1 a2 "a3 a4" a5 "a6 a7 a8" a9)
             return -> [a1, a2, a3 a4, a5, a6 a7 a8, a9]
-
+        parseParameter(a1 a2 "a3 a4 \"a5 a6\" a7" a8 a9)
+            return -> [a1, a2, a3 a4 "a5 a6" a7, a8, a9]
+        parseParameter(a1 a2"a3\"\"\" \"a4""a5""\"a6\"a7"a8 a9)
+            return -> [a1, a2, a3""" "a4, a5, "a6"a7, a8, a9]
      */
-
-        List<String> translated = new ArrayList<>(); //가공된 parameters
-        StringBuilder collector = new StringBuilder(); //큰따옴표 안의 단어들을 모으는 버퍼 콜렉터
-        boolean inQuote = false; //현재 분석중인 요소가 큰따옴표 안에 있는지 판단함
-
-        Predicate<String> isStartsQuote = (str) -> str.charAt(0) == '\"';
-        Predicate<String> isEndsQuote = (str) -> str.charAt(str.length() - 1) == '\"';
-
-        for (String str : parameters) {
-            //str이 큰따옴표로 둘러쌓인 경우
-            if (isStartsQuote.test(str) && isEndsQuote.test(str)) {
-                if (str.equals("\"\"")) {
-                    continue;
-                }
-                translated.add(str.substring(1, str.length() - 1));
-            }
-
-            //str이 큰따옴표로 시작할 경우
-            else if (isStartsQuote.test(str)) {
-                inQuote = true;
-                collector = new StringBuilder(str.substring(1));
-
-            }
-
-            //str이 큰따옴표로 끝날 경우
-            else if (isEndsQuote.test(str)) {
-                inQuote = false;
-                collector.append(" ").append(str.substring(0, str.length() - 1));
-                translated.add(collector.toString());
-            }
-
-            //str에 큰따옴표 문자가 없는 경우
-            else {
-                //큰따옴표 내부에 있는 경우
-                if (inQuote) {
-                    collector.append(" ").append(str);
-                }
-
-                //큰따옴표 외부에 있는 경우
-                else {
-                    translated.add(str);
-                }
+        List<String> translated = new ArrayList<>();
+        if (parameter.length() > 0) {
+            //큰따옴표 기준으로 문자열을 나눔
+            translated = List.of(parameter.split("\""));
+            //escape 된 큰따옴표(\")를 복구
+            translated = repairQuote(translated);
+            //큰따옴표 내부에 있지 않은 문자열을 공백을 기준으로 나눔
+            translated = splitUnquotedString(translated);
+            //빈 문자열 제거
+            for (int i = translated.size() - 1; i >= 0; i--) {
+                if (translated.get(i).length() == 0)
+                    translated.remove(i);
             }
         }
 
         return translated;
+    }
+
+    private static List<String> repairQuote(List<String> splitWithQuote) {
+    /*
+        escaping 된 큰따옴표 문자(\")를 다시 복구
+        ex)
+        (a1 a2 "a3 a4 \"a5 a6\" a7" a8 a9).split(") -> [ a1 a2 , a3 a4 \, a5 a6\,  a7,  a8 a9]
+        repairQuote([ a1 a2 , a3 a4 \, a5 a6\,  a7,  a8 a9]) -> [ a1 a2 , a3 a4 "a5 a6" a7,  a8 a9]
+     */
+        List<String> result = new ArrayList<>(splitWithQuote);
+
+        //1. \가 있는 문자들을 하나로 뭉친다.
+        for (int i = result.size() - 1; i >= 0; i--) {
+            if (result.get(i).contains("\\") && i != result.size() - 1) {
+                result.set(i, result.get(i) + result.get(i + 1));
+                result.remove(i + 1);
+            }
+        }
+        //2. \를 "로 치환한다.
+        result.replaceAll(s -> s.replace('\\', '\"'));
+
+        return result;
+    }
+
+    private static List<String> splitUnquotedString(List<String> translated) {
+    /*
+        큰따옴표로 감싸지지 않았던 문자열을 공백으로 분리
+        splitUnquotedString([ a1 a2 , a3 a4 "a5 a6" a7,  a8 a9]) -> [ a1, a2, a3 a4 "a5 a6" a7, a8, a9]
+     */
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < translated.size(); i++) {
+            //짝수번째 요소가 큰따옴표로 둘러쌓인 문자열임
+            if (i % 2 == 0) {
+                result.addAll(List.of(translated.get(i).trim().split(" ")));
+            }
+            else {
+                result.add(translated.get(i));
+            }
+        }
+
+        return result;
     }
 }
 
@@ -194,6 +215,52 @@ final class MovieCLICommand extends CLICommand {
     public void execute(CLIController controller, List<String> parameters) {
         System.out.println("This is Movie Command");
         System.out.println("parameters: " + parameters);
+
+        Options options = new Options();
+        options.addOption(Option.builder("ls")
+                .longOpt("list")
+                .hasArg(false)
+                .desc("영화 목록을 출력합니다.")
+                .build());
+        options.addOption(Option.builder("help")
+                .hasArg(false)
+                .desc("명령어 사용법을 출력합니다.")
+                .build());
+        options.addOption(Option.builder("info")
+                .longOpt("information")
+                .hasArg()
+                .argName("movie name")
+                        .desc("영화 이름에 대한 영화 정보를 출력합니다.")
+                .build());
+
+        if (parameters.isEmpty())
+            new HelpFormatter() .printHelp("movie [option]", options);
+
+        try {
+            CommandLine command = new DefaultParser().parse(options, parameters.toArray(new String[0]));
+
+            if (command.hasOption("help")) {
+                new HelpFormatter() .printHelp("movie [option]", options);
+            }
+            else if (command.hasOption("ls")) {
+                int index = 0;
+                for (String movieName: controller.getMovieList()) {
+                    System.out.println("Movie " + (++index) + ": " + movieName);
+                }
+            }
+            else if (command.hasOption("info")) {
+                String movieName = command.getOptionValue("info");
+                try {
+                    System.out.println(controller.getMovie(movieName));
+                } catch (IllegalArgumentException e) {
+                    System.out.println("다음의 이름을 가진 영화를 찾을 수 없습니다.");
+                    System.out.println(movieName);
+                }
+            }
+
+        } catch (ParseException e) {
+            System.out.println("인수가 잘못되었습니다. 원인: " + e.getMessage());
+        }
     }
 
     @Override
@@ -227,104 +294,7 @@ final class CmdTestCLICommand extends CLICommand {
 
     @Override
     public void execute(CLIController controller, List<String> parameters) {
-        ///////////////////첫 번째 옵션 해석//////////////////////////////
-        Options preOptions = new Options();
-        preOptions.addOption(Option.builder("ver")
-                .longOpt("version")
-                .hasArg()
-                .argName("version number(1~3)")
-                .desc("실행한다")
-                .build()
-        );
 
-        DefaultParser preParser = new DefaultParser();
-        CommandLine preCommand;
-        try {
-            preCommand = preParser.parse(preOptions, parameters.toArray(new String[0]));
-        } catch (ParseException e) {
-            System.out.println("인자가 잘못되었습니다. 원인: " + e.getMessage());
-            return;
-        }
-
-        //////////////////본격 옵션 테스트///////////////////////////
-        List<String> params;
-        if (preCommand.hasOption("ver")) {
-            if (preCommand.getOptionValue("ver").equals("1"))
-                params = List.of("-ls", "arg1", "\"arg2 arg3\"", "--value", "\"arg4 arg5\"", "arg6");
-            else if (preCommand.getOptionValue("ver").equals("2"))
-                params = List.of("-ls", "arg1", "arg2 arg3", "--value", "arg4 arg5", "arg6");
-            else if (preCommand.getOptionValue("ver").equals("3")) {
-                //통으로 들어온 문자열을 플래그가 1인 경우(위 리스트)로 가공하는 알고리즘임
-                String inlineString = "-ls arg1 \"arg2 arg3\" --value \"arg4 arg5\" arg6";
-
-                //큰따옴표(") 로 먼저 나눈 뒤 나눠진 각 요소를 trim한다.
-                List<String> firstParseList = new ArrayList<>(Arrays.stream(inlineString.split("\"")).map(String::trim).toList());
-
-                //큰따옴표로 감싸지지 않았던 나머지 요소를 스페이스 문자( )로 나누면서, 하나의 리스트에 담아낸다.
-                List<String> secondParseList = new ArrayList<>();
-                for (int i = 0; i < firstParseList.size(); i++) {
-                    if (i % 2 == 0) { //짝수인 경우
-                        secondParseList.addAll(Arrays.asList(firstParseList.get(i).split(" ")));
-                    } else {
-                        secondParseList.add(firstParseList.get(i));
-                    }
-                }
-
-                //결과를 저장한다.
-                params = secondParseList;
-            }
-            else {
-                params = new ArrayList<>();
-            }
-        }
-        else {
-            params = new ArrayList<>();
-        }
-
-        System.out.println("parameters: " + params);
-        Options options = new Options()
-                .addOption("ls", "list", false, "리스트를 출력합니다.")
-                .addOption("val", "value", true, "옵션 값이 있는 옵션 테스트")
-                .addOption("params", false, "주어진 파라미터를 출력합니다.");
-        CommandLineParser parser = new DefaultParser();
-
-        /*
-        if (params.isEmpty()) {
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("movie", options);
-        }
-         */
-
-        try {
-            CommandLine command = parser.parse(options, params.toArray(new String[0]));
-
-            System.out.print("\noption list: ");
-            for (var option : command.getOptions()) {
-                System.out.print(option.getOpt() + "; ");
-            }
-            System.out.println();
-
-            System.out.println("[option values]");
-            for (var option : command.getOptions()) {
-                System.out.println("option name: " + option.getOpt());
-                if (option.getValues() == null) {
-                    System.out.println("value: null");
-                    continue;
-                }
-                System.out.println("values length: " + option.getValues().length);
-                for (String value : option.getValues()) {
-                    System.out.println("value: " + value);
-                }
-            }
-
-            System.out.print("\nargs: ");
-            for (var option: command.getArgs()) {
-                System.out.print(option + "; ");
-            }
-
-        } catch (ParseException e) {
-            System.err.println("Parsing failed.  Reason: " + e.getMessage());
-        }
     }
 
     @Override

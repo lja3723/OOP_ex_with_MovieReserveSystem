@@ -1,6 +1,10 @@
 package com.lja3723.ex.movie_reservation.cli;
 
+import com.lja3723.ex.movie_reservation.MovieList;
 import com.lja3723.ex.movie_reservation.MovieReservationSystem;
+import com.lja3723.ex.movie_reservation.reservable.Movie;
+
+import java.util.List;
 import java.util.Objects;
 
 public class CLIController {
@@ -27,6 +31,14 @@ public class CLIController {
 
     public String getVersion() {
         return MRS.version();
+    }
+
+    public List<String> getMovieList() {
+        return MRS.getMovieList().getMovieList();
+    }
+
+    public Movie getMovie(String movieName) {
+        return MRS.getMovieList().getMovie(movieName);
     }
 
     public void exitProgram() {
