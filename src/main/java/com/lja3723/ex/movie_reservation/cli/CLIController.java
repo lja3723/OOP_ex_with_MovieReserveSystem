@@ -1,8 +1,9 @@
 package com.lja3723.ex.movie_reservation.cli;
 
-import com.lja3723.ex.movie_reservation.MovieReservationSystem;
+import com.lja3723.ex.movie_reservation.*;
 import com.lja3723.ex.movie_reservation.cli.command.*;
 import com.lja3723.ex.movie_reservation.reservable.Movie;
+import com.lja3723.ex.movie_reservation.reservable.Screening;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,8 +13,12 @@ public class CLIController {
     private final CLICommand noCommand = CLICommandFactory.getCommand("none");
     private CLICommand command;
     private CLIView view;
+    private final MovieList movieList;
+    private final ScreeningList screeningList;
     public CLIController(MovieReservationSystem MRS) {
         this.MRS = MRS;
+        this.movieList = MRS.getMovieList();
+        this.screeningList = MRS.getScreeningList();
         this.command = noCommand;
     }
 
@@ -45,17 +50,16 @@ public class CLIController {
     //**************************************/
     //***** MovieController Interface ******/
     //**************************************/
-    public List<String> getMovieList() {
-        return MRS.getMovieList().getMovieList();
-    }
+    public List<String> getMovieList() { return movieList.getMovieList(); }
 
-    public Movie getMovie(String movieName) {
-        return MRS.getMovieList().getMovie(movieName);
+    public Movie getMovie(String movieName) throws IllegalArgumentException {
+        return movieList.getMovie(movieName);
     }
 
 
     //**************************************/
     //*** ScreeningController Interface ****/
     //**************************************/
+    public List<Screening> getScreeningList() { return screeningList.conditionSetter().find(); }
 
 }

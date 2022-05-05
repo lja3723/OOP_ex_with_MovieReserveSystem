@@ -30,12 +30,10 @@ final class HelpCLICommand extends CLICommand {
             for (CLICommandEnum cmd : CLICommandEnum.valuesExecutable())
                 cmdList.put(cmd.name(), CLICommandEnum.getCommand(cmd.name()).description());
 
-            int longestLength = 0;
-            for (String cmd: cmdList.keySet())
-                longestLength = Math.max(longestLength, cmd.length());
+            int longest = getLongestStringLengthOf(cmdList.keySet());
 
             for (String cmd: cmdList.keySet()) {
-                System.out.printf("%-" + (longestLength + 3) + "s %s%n", cmd, cmdList.get(cmd));
+                System.out.printf("%-" + (longest + 3) + "s %s%n", cmd, cmdList.get(cmd));
             }
         }
         else {

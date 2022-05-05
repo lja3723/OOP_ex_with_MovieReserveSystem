@@ -42,6 +42,14 @@ abstract public class CLICommand {
         return commandName() + " [옵션]";
     }
 
+    protected int getLongestStringLengthOf(Collection<String> collection) {
+        int longest = 0;
+        for (String string: collection) {
+            longest = Math.max(longest, string.length());
+        }
+        return longest;
+    }
+
     abstract public String commandName();
     abstract protected void initOptions(Options options);
     abstract protected void execute(CLIController controller, CommandLine commandLine);
