@@ -11,7 +11,7 @@ final class HelpCLICommand extends CLICommand {
 
     @Override
     protected String getCmdLineSyntax() {
-        return super.getCmdLineSyntax() + " [명령어]";
+        return commandName() + " [명령어]";
     }
 
     @Override
@@ -40,12 +40,11 @@ final class HelpCLICommand extends CLICommand {
         }
         else {
             String arg = commandLine.getArgs()[0];
-            CLICommand command = CLICommandEnum.getCommand(arg);
-            if (command instanceof NoneCLICommand noneCommand) {
-                System.out.println(noneCommand.unknownCommand(arg));
+            if (CLICommandEnum.getEnum(arg) == CLICommandEnum.none) {
+                System.out.println(NoneCLICommand.unknownCommand(arg));
             }
             else {
-                command.printHelp();
+                CLICommandEnum.getCommand(arg).printHelp();
             }
         }
     }

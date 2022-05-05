@@ -1,8 +1,7 @@
 package com.lja3723.ex.movie_reservation.cli;
 
 import com.lja3723.ex.movie_reservation.MovieReservationSystem;
-import com.lja3723.ex.movie_reservation.cli.command.CLICommand;
-import com.lja3723.ex.movie_reservation.cli.command.CLICommandFactory;
+import com.lja3723.ex.movie_reservation.cli.command.*;
 import com.lja3723.ex.movie_reservation.reservable.Movie;
 
 import java.util.List;
@@ -18,6 +17,10 @@ public class CLIController {
         this.command = noCommand;
     }
 
+
+    //**************************************/
+    //********** Basic Operations **********/
+    //**************************************/
     public void setView(CLIView view) {
         this.view = view;
     }
@@ -34,6 +37,14 @@ public class CLIController {
         return MRS.version();
     }
 
+    public void exitProgram() {
+        view.exit();
+    }
+
+
+    //**************************************/
+    //***** MovieController Interface ******/
+    //**************************************/
     public List<String> getMovieList() {
         return MRS.getMovieList().getMovieList();
     }
@@ -42,7 +53,9 @@ public class CLIController {
         return MRS.getMovieList().getMovie(movieName);
     }
 
-    public void exitProgram() {
-        view.exit();
-    }
+
+    //**************************************/
+    //*** ScreeningController Interface ****/
+    //**************************************/
+
 }

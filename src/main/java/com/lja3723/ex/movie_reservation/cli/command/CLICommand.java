@@ -13,7 +13,7 @@ abstract public class CLICommand {
         setParameters(parameters);
         options.addOption(Option.builder("?")
                 .longOpt("help")
-                .desc("명령어의 사용법을 출력합니다.")
+                .desc("명령어와 함께 사용할 수 있는 옵션 목록을 출력합니다.")
                 .build());
         initOptions(options);
     }
@@ -61,13 +61,12 @@ final class NoneCLICommand extends CLICommand {
     @Override
     public void execute(CLIController controller, CommandLine commandLine) {
         System.out.print(unknownCommand(commandLine.getArgs()[0]));
-        System.out.println("명령어 목록을 보시려면 help를 입력하십시오.");
     }
 
     @Override
     public String description() { return ""; }
 
-    public String unknownCommand(String unknownCommand) {
-        return unknownCommand + " -> 알 수 없는 명령어입니다. ";
+    public static String unknownCommand(String unknownCommand) {
+        return unknownCommand + " -> 알 수 없는 명령어입니다. 명령어 목록을 보시려면 help를 입력하십시오.";
     }
 }
