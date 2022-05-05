@@ -1,7 +1,8 @@
 package com.lja3723.ex.movie_reservation.cli;
 
-import com.lja3723.ex.movie_reservation.MovieList;
 import com.lja3723.ex.movie_reservation.MovieReservationSystem;
+import com.lja3723.ex.movie_reservation.cli.command.CLICommand;
+import com.lja3723.ex.movie_reservation.cli.command.CLICommandFactory;
 import com.lja3723.ex.movie_reservation.reservable.Movie;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Objects;
 
 public class CLIController {
     private final MovieReservationSystem MRS;
-    private final CLICommand noCommand = new NoneCLICommand(null);
+    private final CLICommand noCommand = CLICommandFactory.getCommand("none");
     private CLICommand command;
     private CLIView view;
     public CLIController(MovieReservationSystem MRS) {

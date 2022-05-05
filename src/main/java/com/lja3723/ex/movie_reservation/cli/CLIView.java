@@ -1,5 +1,7 @@
 package com.lja3723.ex.movie_reservation.cli;
 
+import com.lja3723.ex.movie_reservation.cli.command.CLICommandFactory;
+
 import java.util.Scanner;
 
 public class CLIView {
@@ -9,9 +11,10 @@ public class CLIView {
     public CLIView(CLIController controller) {
         this.controller = controller;
         this.controller.setView(this);
-        this.controller.setCommand(new IntroCLICommand(null));
         this.exit = false;
-        updateUI();
+
+        System.out.println(controller.getVersion() + "이 실행되었습니다.");
+        System.out.println("명령어 목록을 보시려면 help를 입력하십시오.");
     }
 
     public boolean isExit() {
