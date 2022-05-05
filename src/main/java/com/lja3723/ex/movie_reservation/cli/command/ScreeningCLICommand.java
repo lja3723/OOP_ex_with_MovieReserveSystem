@@ -1,9 +1,7 @@
 package com.lja3723.ex.movie_reservation.cli.command;
 
 import com.lja3723.ex.movie_reservation.cli.CLIController;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
-
+import org.apache.commons.cli.*;
 import java.util.List;
 
 final class ScreeningCLICommand extends CLICommand {
@@ -21,7 +19,7 @@ final class ScreeningCLICommand extends CLICommand {
     protected void initOptions(Options options) { }
 
     @Override
-    public void execute(CLIController controller, CommandLine command) {
+    public void execute(CLIController controller, CommandLine commandLine) {
         System.out.println("This is Screening Command");
     }
 

@@ -1,21 +1,20 @@
 package com.lja3723.ex.movie_reservation.cli.command;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public final class CLICommandFactory {
     private CLICommandFactory() {}
 
     public static CLICommand getCommand(String clientMessage) {
-        CLICommandEnum commandName;
+        String commandName;
         String parameter;
 
         if (clientMessage.contains(" ")) {
-            commandName = CLICommandEnum.getEnum(clientMessage.substring(0, clientMessage.indexOf(" ")));
+            commandName = clientMessage.substring(0, clientMessage.indexOf(" "));
             parameter = clientMessage.substring(clientMessage.indexOf(" "));
         }
         else {
-            commandName = CLICommandEnum.getEnum(clientMessage);
+            commandName = clientMessage;
             parameter = "";
         }
 

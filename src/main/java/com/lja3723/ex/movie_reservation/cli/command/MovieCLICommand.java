@@ -1,10 +1,7 @@
 package com.lja3723.ex.movie_reservation.cli.command;
 
 import com.lja3723.ex.movie_reservation.cli.CLIController;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-
+import org.apache.commons.cli.*;
 import java.util.List;
 
 final class MovieCLICommand extends CLICommand {
@@ -34,15 +31,15 @@ final class MovieCLICommand extends CLICommand {
     }
 
     @Override
-    public void execute(CLIController controller, CommandLine command) {
-        if (command.hasOption("ls")) {
+    public void execute(CLIController controller, CommandLine commandLine) {
+        if (commandLine.hasOption("ls")) {
             int index = 0;
             for (String movieName: controller.getMovieList()) {
                 System.out.println("Movie " + (++index) + ": " + movieName);
             }
         }
-        else if (command.hasOption("info")) {
-            String movieName = command.getOptionValue("info");
+        else if (commandLine.hasOption("info")) {
+            String movieName = commandLine.getOptionValue("info");
             try {
                 System.out.println(controller.getMovie(movieName));
             } catch (IllegalArgumentException e) {

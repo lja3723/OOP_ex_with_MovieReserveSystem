@@ -30,8 +30,7 @@ public class CLIView {
     }
 
     public void getClientMessage() {
-        System.out.println();
-        System.out.print("> ");
+        System.out.print("\n> ");
         controller.setCommand(CLICommandFactory.getCommand(new Scanner(System.in).nextLine()));
     }
 }

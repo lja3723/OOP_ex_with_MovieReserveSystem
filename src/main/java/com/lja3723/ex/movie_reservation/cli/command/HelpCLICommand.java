@@ -1,13 +1,8 @@
 package com.lja3723.ex.movie_reservation.cli.command;
 
-
 import com.lja3723.ex.movie_reservation.cli.CLIController;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.cli.*;
+import java.util.*;
 
 final class HelpCLICommand extends CLICommand {
     public HelpCLICommand(List<String> parameters) {
@@ -28,12 +23,12 @@ final class HelpCLICommand extends CLICommand {
     protected void initOptions(Options options) { }
 
     @Override
-    public void execute(CLIController controller, CommandLine command) {
-        if (command.getArgList().isEmpty()) {
+    public void execute(CLIController controller, CommandLine commandLine) {
+        if (commandLine.getArgList().isEmpty()) {
             final Map<String, String> cmdList = new HashMap<>();
 
             for (CLICommandEnum cmd : CLICommandEnum.valuesExecutable())
-                cmdList.put(cmd.name(), CLICommandEnum.getCommand(cmd).description());
+                cmdList.put(cmd.name(), CLICommandEnum.getCommand(cmd.name()).description());
 
             int longestLength = 0;
             for (String cmd: cmdList.keySet())
@@ -44,15 +39,14 @@ final class HelpCLICommand extends CLICommand {
             }
         }
         else {
-            String arg = command.getArgs()[0];
-            CLICommandEnum cmdEnum = CLICommandEnum.getEnum(arg);
-
-            if (cmdEnum == CLICommandEnum.none) {
-                System.out.println("\"" + arg + "\": " + "알 수 없는 명령어입니다.");
-                return;
+            String arg = commandLine.getArgs()[0];
+            CLICommand command = CLICommandEnum.getCommand(arg);
+            if (command instanceof NoneCLICommand noneCommand) {
+                System.out.println(noneCommand.unknownCommand(arg));
             }
-
-            CLICommandEnum.getCommand(cmdEnum).printHelp();
+            else {
+                command.printHelp();
+            }
         }
     }
 
